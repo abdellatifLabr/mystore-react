@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
+import SignUpPage from './pages/SignUpPage';
 
 class App extends Component {
   render() {
@@ -13,6 +14,7 @@ class App extends Component {
         <Container className="my-4">
           <Switch>
             <Route path="/" component={HomePage} exact />
+            <Route path="/signup" component={SignUpPage} exact />
           </Switch>
         </Container>
       </BrowserRouter>

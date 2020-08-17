@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { 
   Navbar, 
@@ -36,23 +37,28 @@ class Navigation extends Component {
                 </InputGroup.Append>
               </InputGroup>
             </Form>
-            <Nav>
-              <Nav.Link as="div">
-                <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                <Badge pill variant="primary" className="ml-2">0</Badge>
-              </Nav.Link>
-              <NavDropdown title="Firstname" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.1">Dashboard</NavDropdown.Item>
-                <NavDropdown.Item as="div">Settings</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item>Sign Out</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <Nav>
-              <Button variant="primary" className="mr-sm-2">Sign Up</Button>
-              <Button variant="outline-primary">Sign In</Button>
-            </Nav>
+            {
+              this.props.user 
+              ? <Nav>
+                  <Nav.Link as="div">
+                    <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                    <Badge pill variant="primary" className="ml-2">0</Badge>
+                  </Nav.Link>
+                  <NavDropdown title={this.props.user.firstName} id="basic-nav-dropdown">
+                    <NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.1">Dashboard</NavDropdown.Item>
+                    <NavDropdown.Item as="div">Settings</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item>Sign Out</NavDropdown.Item>
+                  </NavDropdown>
+                </Nav>
+              : <Nav>
+                  <Link to="/signup">
+                    <Button variant="primary" className="mr-sm-2">Sign Up</Button>
+                  </Link>
+                  <Button variant="outline-primary">Sign In</Button>
+                </Nav>
+            }
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -60,4 +66,8 @@ class Navigation extends Component {
   }
 }
 
-export default Navigation;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, {})(Navigation);
