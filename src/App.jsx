@@ -9,6 +9,7 @@ import SignUpPage from './pages/SignUpPage';
 import SignInPage from './pages/SignInPage';
 import UserVerificationAlert from './components/UserVerificationAlert';
 import ActivationPage from './pages/ActivationPage';
+import StorePage from './pages/StorePage';
 
 class App extends Component {
   render() {
@@ -22,6 +23,7 @@ class App extends Component {
             <Route path="/signup" component={SignUpPage} exact />
             <Route path="/signin" component={SignInPage} exact />
             <Route path="/activate/:token" component={ActivationPage} exact />
+            <Route path="/store/:id" component={StorePage} exact />
           </Switch>
         </Container>
       </BrowserRouter>

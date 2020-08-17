@@ -21,6 +21,46 @@ export const STORES = gql`
   }
 `;
 
+export const STORE = gql`
+  query Store($id: ID!) {
+    store(id: $id) {
+      pk
+      id
+      name
+      description
+      logo {
+        original
+      }
+      cover {
+        original
+      }
+      closed
+      products {
+        edges {
+          node {
+            pk
+            id
+            name
+            unitsLeft
+            pictures {
+              original
+            }
+            price {
+              value
+              currency 
+            }
+            store {
+              pk
+              id
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const SUBSCRIPTION = gql`
   query Subscription($storeId: ID!) {
     subscriptions(store_Id: $storeId) {

@@ -10,6 +10,14 @@ class StoreProvider {
     return res.data.stores.edges.map(edge => edge.node);
   }
 
+  async getStore(id) {
+    let res = await apollo.query({
+      query: queries.STORE,
+      variables: { id }
+    });
+    return res.data.store;
+  }
+
   async getSubscription(storeId) {
     let res = await apollo.query({
       query: queries.SUBSCRIPTION,
