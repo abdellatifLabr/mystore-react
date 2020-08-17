@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ApolloProvider } from '@apollo/client';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './index.css';
 import App from './App';
