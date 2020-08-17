@@ -3,6 +3,8 @@ import * as jwt_decode from 'jwt-decode';
 import apollo from '../graphql';
 import * as mutations from '../graphql/mutations/user.mutations';
 import * as queries from '../graphql/queries/user.queries';
+import store from '../store';
+import { setUser } from '../store/actions/user.actions';
 
 class UserProvider {
   async signUp(user) {
@@ -60,6 +62,12 @@ class UserProvider {
       variables: { token }
     });
     return res.data.verifyAccount;
+  }
+
+  async signOut() {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    store.dispatch(setUser(null));
   }
 
 }

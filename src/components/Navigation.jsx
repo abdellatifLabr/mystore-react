@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { 
   Navbar, 
   Nav, 
@@ -15,8 +15,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faSearch } from '@fortawesome/free-solid-svg-icons';
 
+import userProvider from '../providers/user.provider';
+
 class Navigation extends Component {
   state = {};
+
+  onSignOutClick() {
+    userProvider.signOut()
+      .then(() => this.history.push('/'));
+  }
   
   render() {
     return (
@@ -49,7 +56,7 @@ class Navigation extends Component {
                     <NavDropdown.Item href="#action/3.1">Dashboard</NavDropdown.Item>
                     <NavDropdown.Item as="div">Settings</NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item>Sign Out</NavDropdown.Item>
+                    <NavDropdown.Item onClick={this.onSignOutClick}>Sign Out</NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
               : <Nav>
@@ -70,4 +77,4 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, {})(Navigation);
+export default connect(mapStateToProps, {})(withRouter(Navigation));

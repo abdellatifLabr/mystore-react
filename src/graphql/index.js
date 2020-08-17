@@ -8,20 +8,20 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext(async (req, { headers }) => {
-  let token = localStorage.getItem('access');
+  let currToken = localStorage.getItem('access');
 
-  if (!token) return;
+  if (!currToken) return;
   if (req.operationName === 'RefreshToken') return;
 
-  if (userProvider.isTokenExpired(token)) {
-    let data = await userProvider.refreshToken()
+  if (userProvider.isTokenExpired(currToken)) {
+    let { success, errors, token } = await userProvider.refreshToken()
 
-    if (data.success) {
-      localStorage.setItem('access', data.token);
-      token = data.token;
+    if (success) {
+      localStorage.setItem('access', token);
+      currToken = token;
     }
 
-    if (data.errors) {
+    if (errors) {
       userProvider.signOut();
     }
   }
@@ -29,7 +29,7 @@ const authLink = setContext(async (req, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: `Bearer ${token}`
+      authorization: `Bearer ${currToken}`
     }
   }
 });
