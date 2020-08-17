@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './index.css';
 import App from './App';
+import Splash from './Splash';
 import store from './store';
 import apolloClient from './graphql';
 import userProvider from './providers/user.provider';
@@ -18,6 +19,13 @@ async function acquirePreRenderRequirements() {
   }
   return;
 }
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Splash />
+  </React.StrictMode>,
+  document.getElementById('root')
+); 
 
 acquirePreRenderRequirements()
   .then(() => {
