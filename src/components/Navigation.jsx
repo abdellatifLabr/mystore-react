@@ -20,9 +20,15 @@ import userProvider from '../providers/user.provider';
 class Navigation extends Component {
   state = {};
 
+  constructor(props) {
+    super(props);
+
+    this.onSignOutClick = this.onSignOutClick.bind(this);
+  }
+
   onSignOutClick() {
     userProvider.signOut()
-      .then(() => this.history.push('/'));
+      .then(() => this.props.history.push('/'));
   }
   
   render() {
@@ -63,7 +69,9 @@ class Navigation extends Component {
                   <Link to="/signup">
                     <Button variant="primary" className="mr-sm-2">Sign Up</Button>
                   </Link>
-                  <Button variant="outline-primary">Sign In</Button>
+                  <Link to="/signin">
+                    <Button variant="outline-primary">Sign In</Button>
+                  </Link>
                 </Nav>
             }
           </Navbar.Collapse>

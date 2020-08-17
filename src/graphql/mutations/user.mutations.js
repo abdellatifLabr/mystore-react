@@ -25,6 +25,17 @@ export const SIGN_UP = gql`
   }
 `;
 
+export const SIGN_IN = gql`
+  mutation SignIn($username: String!, $password: String!) {
+    tokenAuth(username: $username, password: $password) {
+      success
+      errors
+      token
+      refreshToken
+    }
+  }
+`;
+
 export const REFRESH_TOKEN = gql`
   mutation RefreshToken($refresh: String!) {
     refreshToken(refreshToken: $refresh) {

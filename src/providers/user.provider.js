@@ -22,6 +22,21 @@ class UserProvider {
     return data;
   }
 
+  async signIn(username, password) {
+    let res = await apollo.mutate({
+      mutation: mutations.SIGN_IN,
+      variables: { username, password }
+    });
+    let data = res.data.tokenAuth;
+
+    if (data.success) {
+      localStorage.setItem('access', data.token);
+      localStorage.setItem('refresh', data.refreshToken);
+    }
+
+    return data; 
+  }
+
   isAuthenticated() {
     return !!(localStorage.getItem('access') && localStorage.getItem('refresh'));
   }

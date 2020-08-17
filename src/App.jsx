@@ -6,6 +6,7 @@ import { Container } from 'react-bootstrap';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignUpPage';
+import SignInPage from './pages/SignInPage';
 import UserVerificationAlert from './components/UserVerificationAlert';
 import ActivationPage from './pages/ActivationPage';
 
@@ -19,6 +20,7 @@ class App extends Component {
           <Switch>
             <Route path="/" component={HomePage} exact />
             <Route path="/signup" component={SignUpPage} exact />
+            <Route path="/signin" component={SignInPage} exact />
             <Route path="/activate/:token" component={ActivationPage} exact />
           </Switch>
         </Container>
