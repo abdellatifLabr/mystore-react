@@ -3,6 +3,7 @@ import { Row, Col, Card, Media, ListGroup } from 'react-bootstrap';
 
 import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
+import ProductCard from '../components/ProductCard';
 
 class StorePage extends Component {
   state = {
@@ -74,7 +75,7 @@ class StorePage extends Component {
               </ListGroup>
             </Card>
           </Col> 
-          {/* <Col className="mt-4">
+          <Col className="mt-4">
             <Row>               
               {products.map(product => (
                 <Col md={3} key={product.id}>
@@ -82,7 +83,7 @@ class StorePage extends Component {
                 </Col>
               ))}         
             </Row>
-          </Col> */}
+          </Col>
         </Row>
       </div>
     );
