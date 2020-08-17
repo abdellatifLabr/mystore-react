@@ -20,6 +20,10 @@ class UserProvider {
     return data;
   }
 
+  isAuthenticated() {
+    return !!(localStorage.getItem('access') && localStorage.getItem('refresh'));
+  }
+
   async me() {
     let res = await apollo.query({
       query: queries.ME

@@ -8,14 +8,27 @@ import './index.css';
 import App from './App';
 import store from './store';
 import apolloClient from './graphql';
+import userProvider from './providers/user.provider';
+import { setUser } from './store/actions/user.actions';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ApolloProvider client={apolloClient}>
-        <App />
-      </ApolloProvider>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+async function acquirePreRenderRequirements() {
+  if (userProvider.isAuthenticated()) {
+    let user = await userProvider.me();
+    store.dispatch(setUser(user));
+  }
+  return;
+}
+
+acquirePreRenderRequirements()
+  .then(() => {
+    ReactDOM.render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <ApolloProvider client={apolloClient}>
+            <App />
+          </ApolloProvider>
+        </Provider>
+      </React.StrictMode>,
+      document.getElementById('root')
+    );    
+  });
