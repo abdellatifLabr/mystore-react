@@ -34,3 +34,21 @@ export const REFRESH_TOKEN = gql`
     }
   }
 `;
+
+export const RESEND_VERIFICATION_EMAIL = gql`
+  mutation ResendVerificationEmail($email: String!) {
+    resendActivationEmail(email: $email) {
+      success,
+      errors
+    }
+  }
+`;
+
+export const VERIFY_ACCOUNT = gql`
+  mutation VerifyAccount($token: String!) {
+    verifyAccount(token: $token) {
+      success
+      errors
+    }
+  }
+`;

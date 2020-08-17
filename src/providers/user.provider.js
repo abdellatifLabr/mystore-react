@@ -46,6 +46,22 @@ class UserProvider {
     return res.data.refreshToken;
   }
 
+  async resendLink(email) {
+    let res = await apollo.mutate({
+      mutation: mutations.RESEND_VERIFICATION_EMAIL,
+      variables: { email }
+    });
+    return res.data.resendActivationEmail;
+  }
+
+  async activate(token) {
+    let res = await apollo.mutate({
+      mutation: mutations.VERIFY_ACCOUNT,
+      variables: { token }
+    });
+    return res.data.verifyAccount;
+  }
+
 }
 
 export default new UserProvider();
