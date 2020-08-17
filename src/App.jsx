@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
 import Navigation from './components/Navigation';
+import HomePage from './pages/HomePage';
 
 class App extends Component {
   render() {
@@ -11,7 +12,7 @@ class App extends Component {
         <Navigation />
         <Container className="my-4">
           <Switch>
-            
+            <Route path="/" component={HomePage} exact />
           </Switch>
         </Container>
       </BrowserRouter>
