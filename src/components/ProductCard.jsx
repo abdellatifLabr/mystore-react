@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import CartButton from '../components/CartButton';
+
 class ProductCard extends Component {
   render() {
     let product = this.props.product;
@@ -20,7 +22,7 @@ class ProductCard extends Component {
           <div className="d-flex justify-content-between">
             <strong>{price} {currency}</strong>
             <div>
-              {/* <AddToCartButton size="sm" product={product} /> */}
+              <CartButton size="sm" product={product} />
             </div>
           </div>
         </Card.Footer>
