@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, Media, ListGroup } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
@@ -7,18 +9,28 @@ import ProductCard from '../components/ProductCard';
 
 class StorePage extends Component {
   state = {
+    loading: false,
     store: null
   };
 
   componentDidMount() {
     let storeId = this.props.match.params.id;
+
+    this.setState({ loading: true });
+
     storeProvider.getStore(storeId)
-      .then(store => this.setState({ store }));
+      .then(store => {
+        this.setState({ store, loading: false });
+      });
   }
 
   render() {
     if (!this.state.store) {
-      return <h4 className="text-secondary text-center">This store doesn't exist</h4>
+      return (
+        <h4 className="text-secondary text-center">
+          {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'This store doesn\'t exist'}
+        </h4>
+      );
     }
 
     let store = this.state.store;
