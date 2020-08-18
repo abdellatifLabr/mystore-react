@@ -41,3 +41,43 @@ export const DELETE_CART_PRODUCT = gql`
     }
   }
 `;
+
+export const UPDATE_CART_PRODUCT = gql`
+  mutation UpdateCartProduct(
+    $cartProductId: ID!,
+    $quantity: Int
+  ) {
+    updateCartProduct(
+      input: {
+        cartProductId: $cartProductId,
+        quantity: $quantity
+      }
+    ) {
+      success
+      cartProduct {
+        pk
+        id
+        quantity
+        cost
+        product {
+          pk
+          id
+          name
+          description
+          price {
+            value
+            currency
+          }
+          pictures {
+            original
+          }
+          store {
+            id
+            pk
+            name
+          }
+        }
+      }
+    }
+  }
+`;

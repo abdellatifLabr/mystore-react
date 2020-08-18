@@ -10,6 +10,7 @@ import SignInPage from './pages/SignInPage';
 import UserVerificationAlert from './components/UserVerificationAlert';
 import ActivationPage from './pages/ActivationPage';
 import StorePage from './pages/StorePage';
+import CartPage from './pages/CartPage';
 
 class App extends Component {
   render() {
@@ -24,6 +25,7 @@ class App extends Component {
             <Route path="/signin" component={SignInPage} exact />
             <Route path="/activate/:token" component={ActivationPage} exact />
             <Route path="/store/:id" component={StorePage} exact />
+            <Route path="/cart" component={CartPage} exact />
           </Switch>
         </Container>
       </BrowserRouter>

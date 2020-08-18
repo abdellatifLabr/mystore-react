@@ -53,12 +53,14 @@ class Navigation extends Component {
             {
               this.props.user 
               ? <Nav>
+                  <Link to="/cart">
                   <Nav.Link as="div">
-                    <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                    <Badge pill variant="primary" className="">
-                      {this.props.cart.length}
-                    </Badge>
+                      <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                      <Badge pill variant="primary" className="">
+                        {this.props.cart.length}
+                      </Badge>
                   </Nav.Link>
+                  </Link>
                   <NavDropdown title={this.props.user.firstName} id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.1">Dashboard</NavDropdown.Item>

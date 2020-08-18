@@ -29,6 +29,15 @@ class CartProvider {
 
     return res.data.cartProducts.edges.map(edge => edge.node);
   }
+
+  async updateCartProduct(cartProductId, fields) {
+    let res = await apollo.mutate({
+      mutation: mutations.UPDATE_CART_PRODUCT,
+      variables: { cartProductId, ...fields }
+    });
+
+    return res.data.updateCartProduct;
+  }
 }
 
 export default new CartProvider();
