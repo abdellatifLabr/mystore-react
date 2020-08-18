@@ -34,8 +34,7 @@ class SignInForm extends Component {
     });
 
     let { username, password } = this.state.signInFormData;
-    this.signIn(username, password)
-      .then(() => this.props.history.push('/'));
+    this.signIn(username, password);
   }
 
   async signIn(username, password) {
@@ -48,6 +47,7 @@ class SignInForm extends Component {
     if (success) {
       let user = await userProvider.me();
       this.props.setUser(user);
+      this.props.history.push('/')
     }
   }
 

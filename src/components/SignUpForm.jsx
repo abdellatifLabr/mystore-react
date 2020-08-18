@@ -38,8 +38,7 @@ class SignUpForm extends Component {
     });
 
     let user = this.state.signUpFormData;
-    this.signUp(user)
-      .then(() => this.props.history.push('/'));
+    this.signUp(user);
   }
 
   async signUp(user) {
@@ -52,6 +51,7 @@ class SignUpForm extends Component {
     if (success) {
       let user = await userProvider.me();
       this.props.setUser(user);
+      this.props.history.push('/');
     }
   }
 
