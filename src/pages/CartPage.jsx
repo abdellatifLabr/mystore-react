@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Image, ListGroup, Card } from 'react-bootstrap';
+import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 
 import { removeProductFromCart } from '../store/actions/cart.actions';
 import QuantityControl from '../components/QuantityControl';
 import CartButton from '../components/CartButton';
+import CartSummary from '../components/CartSummary';
 
 class CartPage extends Component {
 
@@ -45,7 +46,8 @@ class CartPage extends Component {
           </Card>
         </Col>
         <Col>
-          {/* <CartSummary /> */}
+          <CartSummary />
+          <Button variant="primary" className="mt-2" block>Proceed to Checkout</Button>
         </Col>
       </Row>
     );
