@@ -35,9 +35,11 @@ class Navigation extends Component {
     return (
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container>
-          <Navbar.Brand>
-            My Store
-          </Navbar.Brand>
+          <Link to="/">
+            <Navbar.Brand>
+              My Store
+            </Navbar.Brand>
+          </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Form inline className="mx-auto w-50">
