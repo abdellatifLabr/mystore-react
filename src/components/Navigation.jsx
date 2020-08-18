@@ -55,7 +55,9 @@ class Navigation extends Component {
               ? <Nav>
                   <Nav.Link as="div">
                     <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                    <Badge pill variant="primary" className="ml-2">0</Badge>
+                    <Badge pill variant="primary" className="">
+                      {this.props.cart.length}
+                    </Badge>
                   </Nav.Link>
                   <NavDropdown title={this.props.user.firstName} id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
@@ -82,7 +84,8 @@ class Navigation extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  cart: state.cart
 });
 
 export default connect(mapStateToProps, {})(withRouter(Navigation));

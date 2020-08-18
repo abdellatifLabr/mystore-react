@@ -1,5 +1,6 @@
 import apollo from '../graphql';
 import * as mutations from '../graphql/mutations/cart.mutations';
+import * as queries from '../graphql/queries/cart.queries';
 
 class CartProvider {
   async createCartProduct(productId) {
@@ -18,6 +19,15 @@ class CartProvider {
     });
 
     return res.data.deleteCartProduct;
+  }
+
+  async getCartProducts(userId) {
+    let res = await apollo.query({
+      query: queries.CART_PRODUCTS,
+      variables: { userId }
+    });
+
+    return res.data.cartProducts.edges.map(edge => edge.node);
   }
 }
 
