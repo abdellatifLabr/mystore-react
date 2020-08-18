@@ -7,6 +7,8 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 import userProvider from '../providers/user.provider';
 import { setUser } from '../store/actions/user.actions';
+import cartProvider from '../providers/cart.provider';
+import { addProductToCart } from '../store/actions/cart.actions';
 
 class SignInForm extends Component {
   state = {
@@ -47,6 +49,10 @@ class SignInForm extends Component {
     if (success) {
       let user = await userProvider.me();
       this.props.setUser(user);
+
+      let cartProducts = await cartProvider.getCartProducts(user.id);
+      cartProducts.forEach(cartProduct => this.props.addProductToCart(cartProduct));
+
       this.props.history.push('/')
     }
   }
@@ -123,4 +129,4 @@ class SignInForm extends Component {
   }
 }
 
-export default connect(null, { setUser })(withRouter(SignInForm));
+export default connect(null, { setUser, addProductToCart })(withRouter(SignInForm));
