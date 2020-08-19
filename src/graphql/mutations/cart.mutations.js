@@ -15,6 +15,7 @@ export const CREATE_CART_PRODUCT = gql`
           pk
           id
           name
+          description
           unitsLeft
           pictures {
             original
@@ -78,6 +79,14 @@ export const UPDATE_CART_PRODUCT = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const DELETE_ALL_CART_PRODUCTS = gql`
+  mutation DeleteAllCartProducts {
+    deleteAllCartProducts(input: {}) {
+      success
     }
   }
 `;

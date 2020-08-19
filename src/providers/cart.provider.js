@@ -38,6 +38,14 @@ class CartProvider {
 
     return res.data.updateCartProduct;
   }
+
+  async deleteAllCartProducts() {
+    let res = await apollo.mutate({
+      mutation: mutations.DELETE_ALL_CART_PRODUCTS
+    });
+
+    return res.data.deleteAllCartProducts;
+  }
 }
 
 export default new CartProvider();

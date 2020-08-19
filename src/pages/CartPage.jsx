@@ -4,11 +4,12 @@ import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
-import { removeProductFromCart } from '../store/actions/cart.actions';
+import { removeProductFromCart, clearCart } from '../store/actions/cart.actions';
 import QuantityControl from '../components/QuantityControl';
 import CartButton from '../components/CartButton';
 import CartSummary from '../components/CartSummary';
 import orderProvider from '../providers/order.provider';
+import cartProvider from '../providers/cart.provider';
 
 class CartPage extends Component {
   state = {
@@ -46,7 +47,10 @@ class CartPage extends Component {
         let productId = cartProduct.product.pk;
         await orderProvider.createOrderItem(orderId, quantity, productId);
       });
-  
+      
+      await cartProvider.deleteAllCartProducts();
+      this.props.clearCart();
+
       return createOrder.order;
     }
 
@@ -54,6 +58,10 @@ class CartPage extends Component {
   }
 
   render() {
+    if (this.props.cart.length == 0) {
+      return <h4 className="text-secondary text-center">Your cart is empty</h4>
+    }
+    
     return (
       <Row>
         <Col md={9}>
@@ -104,4 +112,4 @@ const mapStateToProps = state => ({
   cart: state.cart
 });
 
-export default connect(mapStateToProps, { removeProductFromCart })(CartPage);
+export default connect(mapStateToProps, { removeProductFromCart, clearCart })(CartPage);

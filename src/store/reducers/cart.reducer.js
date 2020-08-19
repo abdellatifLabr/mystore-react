@@ -27,6 +27,10 @@ const cartReducer = (state = initialState, action) => {
           ...state.slice(index + 1)
         ];
         return state;
+      
+      case types.CLEAR_CART:
+        state = [];
+        return state;
   
     default:
       return state;
