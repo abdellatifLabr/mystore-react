@@ -1,28 +1,44 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, Button, InputGroup, FormControl } from 'react-bootstrap';
+import { Row, Col, Card, Button, ListGroup, Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 import AddressForm from '../components/AddressForm';
 import OrderSummary from '../components/OrderSummary';
 import DiscountCodeChecker from '../components/DiscountCodeChecker';
 import orderProvider from '../providers/order.provider';
+import addressProvider from '../providers/address.provider';
 
 class OrderPage extends Component {
   state = {
-    order: null
+    order: null,
+    loading: false,
+    billingIsShippingAddress: false
   };
 
   constructor(props) {
     super(props);
 
     this.addDiscountCode = this.addDiscountCode.bind(this);
+    this.addBillingAddress = this.addBillingAddress.bind(this);
+    this.addShippingAddress = this.addShippingAddress.bind(this);
+    this.onShippingAddressToggleChange = this.onShippingAddressToggleChange.bind(this);
   }
 
   componentDidMount() { 
     let orderId = this.props.match.params.id;
+
+    this.setState({ loading: true });
+
     orderProvider.getOrder(orderId)
       .then(order => {
+        this.setState({ loading: false });
+
         if (order) {
-          this.setState({ order });
+          this.setState({
+            order,
+            billingIsShippingAddress: !order.shippingAddress
+          });
         }
       });
   }
@@ -38,31 +54,89 @@ class OrderPage extends Component {
       });
   }
 
+  addBillingAddress(address) {
+    orderProvider.updateOrder(this.state.order.pk, { billingAddressId: address.pk })
+      .then(data => {
+        let { order, success } = data;
+
+        if (success) {
+          this.setState({ order });
+        }
+      });
+  }
+
+  addShippingAddress(address) {
+    orderProvider.updateOrder(this.state.order.pk, { shippingAddressId: address.pk })
+      .then(data => {
+        let { order, success } = data;
+
+        if (success) {
+          this.setState({ order });
+        }
+      });
+  }
+
+  onShippingAddressToggleChange(e) {
+    this.setState({ billingIsShippingAddress: e.target.checked });
+
+    if (!e.checked) {
+      if (this.state.order.shippingAddress) {
+        addressProvider.deleteAddress(this.state.order.shippingAddress.pk);
+      }
+    }
+  }
+
   render() {
+    if (!this.state.order) {
+      return (
+        <h4 className="text-secondary text-center">
+          {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'This order doesn\'t exist'}
+        </h4>
+      );
+    }
+
     return (
       <Row>
         <Col md={9}>
           <Card>
-            <Card.Body>
-              <h5 className="mb-2">Billing Address</h5>
-              <AddressForm />
-
-              <h5 className="mb-2 mt-4">Shipping Address</h5>
-              <AddressForm />
-    
-              <h5 className="mb-2 mt-4">Payment</h5>
-            </Card.Body>
+            <Card.Header className="text-center">
+              <strong>Order Details</strong>
+            </Card.Header>
+            <ListGroup variant="flush">
+              <ListGroup.Item>
+                <h5 className="mb-4">Billing Address</h5>
+                <AddressForm 
+                  address={this.state.order.billingAddress} 
+                  onAddressResolved={this.addBillingAddress}
+                />
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <h5 className="mb-2">Shipping Address</h5>
+                <Form.Check 
+                  className="my-4" 
+                  type="checkbox" 
+                  checked={this.state.billingIsShippingAddress}
+                  onChange={this.onShippingAddressToggleChange} 
+                  label="Shipping address is the same as my billing address" 
+                />
+                <AddressForm 
+                  address={this.state.order.shippingAddress} 
+                  onAddressResolved={this.addShippingAddress}
+                  disabled={this.state.billingIsShippingAddress}
+                />
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <h5 className="mb-4">Payment</h5>
+              </ListGroup.Item>
+            </ListGroup>
             <Card.Footer className="text-right">
               <Button variant="primary">Checkout</Button>
               <Button variant="outline-danger" className="ml-2">Cancel & Delete</Button>
             </Card.Footer>
           </Card>
         </Col>
-        <Col>
-          {
-            this.state.order &&
-            <OrderSummary order={this.state.order} />
-          }
+        <Col>     
+          <OrderSummary order={this.state.order} />
           <div className="mt-2">
             <DiscountCodeChecker onDiscountCodeChecked={this.addDiscountCode} />
           </div>

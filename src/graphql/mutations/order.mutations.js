@@ -52,9 +52,27 @@ export const UPDATE_ORDER = gql`
         pk
         id
         total
+        billingAddress {
+          pk
+          id
+          country
+          city
+          street
+          postalCode
+        }
+        shippingAddress {
+          pk
+          id
+          country
+          city
+          street
+          postalCode
+        }
         discountCodes {
           edges {
             node {
+              pk
+              id
               code
               value
               store {
