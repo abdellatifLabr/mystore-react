@@ -1,13 +1,57 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 import { removeProductFromCart } from '../store/actions/cart.actions';
 import QuantityControl from '../components/QuantityControl';
 import CartButton from '../components/CartButton';
 import CartSummary from '../components/CartSummary';
+import orderProvider from '../providers/order.provider';
 
 class CartPage extends Component {
+  state = {
+    loading: false
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.onProceedToCheckoutClick = this.onProceedToCheckoutClick.bind(this);
+  }
+
+  onProceedToCheckoutClick() {
+    this.setState({ loading: true });
+
+    this.prepareOrder()
+      .then(order => {
+        this.setState({ loading: false });
+
+        if (order) {
+          this.props.history.push(`/order/${order.id}`);
+        } else {
+          // notify error
+        }
+      });
+  }
+
+  async prepareOrder() {
+    let createOrder = await orderProvider.createOrder();
+
+    if (createOrder.success) {
+      await this.props.cart.forEach(async cartProduct => {
+        let orderId = createOrder.order.pk;
+        let quantity = cartProduct.quantity;
+        let productId = cartProduct.product.pk;
+        await orderProvider.createOrderItem(orderId, quantity, productId);
+      });
+  
+      return createOrder.order;
+    }
+
+    return;
+  }
 
   render() {
     return (
@@ -47,7 +91,9 @@ class CartPage extends Component {
         </Col>
         <Col>
           <CartSummary />
-          <Button variant="primary" className="mt-2" block>Proceed to Checkout</Button>
+          <Button variant="primary" className="mt-2" block onClick={this.onProceedToCheckoutClick}>
+            {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'Proceed to Checkout'}
+          </Button>
         </Col>
       </Row>
     );

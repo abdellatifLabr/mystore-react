@@ -3,14 +3,10 @@ import { connect } from 'react-redux';
 import { Card, ListGroup, Button } from 'react-bootstrap';
 
 class CartSummary extends Component {
-  state = {
-    discountCodes: []
-  };
-
   render() {
     let total = this.props.cart.reduce((result, cartProduct) => {
       return result + cartProduct.cost;
-    }, 0);
+    }, 0).toFixed(2);
 
     return (
       <Card>
