@@ -161,7 +161,6 @@ class AddressForm extends Component {
           <Form.Control.Feedback type="invalid">
             { this.getErrorFeedbackDOM('postalCode') }
           </Form.Control.Feedback>
-<<<<<<< HEAD
         </Form.Group>
         { this.getErrorFeedbackDOM('nonFieldErrors') }
         <div className="text-right">
@@ -173,19 +172,6 @@ class AddressForm extends Component {
             }
           </Button>
         </div>
-=======
-        </Form.Group>
-        { this.getErrorFeedbackDOM('nonFieldErrors') }
-        <Form.Group className="text-right">
-          <Button variant="primary" type="submit">
-            { 
-              this.state.loading 
-              ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> 
-              : 'Save'
-            }
-          </Button>
-        </Form.Group>
->>>>>>> 5e80692041a2bd9015c3b09c7f5c32072354b3b7
       </Form>
     );
   }
