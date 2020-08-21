@@ -99,7 +99,7 @@ class CartPage extends Component {
         </Col>
         <Col>
           <CartSummary />
-          <Button variant="primary" className="mt-2" block onClick={this.onProceedToCheckoutClick}>
+          <Button variant="primary" className="mt-2" block disabled={this.state.loading} onClick={this.onProceedToCheckoutClick}>
             {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'Proceed to Checkout'}
           </Button>
         </Col>

@@ -51,7 +51,9 @@ export const UPDATE_ORDER = gql`
       order {
         pk
         id
+        done
         total
+        updated
         billingAddress {
           pk
           id
@@ -105,6 +107,19 @@ export const UPDATE_ORDER = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const COMPLETE_CHECKOUT = gql`
+  mutation CompleteCheckout($orderId: ID!) {
+    completeCheckout(
+      input: { 
+        orderId: $orderId 
+      }
+    ) {
+      success
+      clientSecret
     }
   }
 `;

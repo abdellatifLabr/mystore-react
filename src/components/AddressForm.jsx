@@ -105,7 +105,8 @@ class AddressForm extends Component {
                 labelType="full"
                 valueType="short"
                 required
-                disabled={this.props.disabled}
+                disabled={this.props.disabled || this.props.readOnly}
+                readOnly={this.props.readOnly}
                 value={this.state.addressFormData.country}
                 onChange={(val) => this.handleChange({ target: { name: 'country', value: val } })}
               />
@@ -122,6 +123,7 @@ class AddressForm extends Component {
                 name="city"
                 required
                 disabled={this.props.disabled}
+                readOnly={this.props.readOnly}
                 value={this.state.addressFormData.city}
                 onChange={this.handleChange}
                 isInvalid={this.state.errors['city']}
@@ -139,6 +141,7 @@ class AddressForm extends Component {
             name="street"
             required
             disabled={this.props.disabled}
+            readOnly={this.props.readOnly}
             value={this.state.addressFormData.street}
             onChange={this.handleChange}
             isInvalid={this.state.errors['street']}
@@ -154,6 +157,7 @@ class AddressForm extends Component {
             name="postalCode"
             required
             disabled={this.props.disabled}
+            readOnly={this.props.readOnly}
             value={this.state.addressFormData.postalCode}
             onChange={this.handleChange}
             isInvalid={this.state.errors['postalCode']}
@@ -164,13 +168,16 @@ class AddressForm extends Component {
         </Form.Group>
         { this.getErrorFeedbackDOM('nonFieldErrors') }
         <div className="text-right">
-          <Button variant="primary" type="submit">
-            { 
-              this.state.loading 
-              ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> 
-              : 'Save'
-            }
-          </Button>
+          {
+            !this.props.readOnly &&
+            <Button variant="primary" type="submit">
+              { 
+                this.state.loading 
+                ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> 
+                : 'Save'
+              }
+            </Button>
+          }
         </div>
       </Form>
     );

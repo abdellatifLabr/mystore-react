@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, Button, ListGroup, Form } from 'react-bootstrap';
+import { Row, Col, Card, ListGroup, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { loadStripe } from '@stripe/stripe-js';
+import { ElementsConsumer, Elements } from '@stripe/react-stripe-js';
 
 import AddressForm from '../components/AddressForm';
 import OrderSummary from '../components/OrderSummary';
 import DiscountCodeChecker from '../components/DiscountCodeChecker';
+import CheckoutForm from '../components/CheckoutForm';
 import orderProvider from '../providers/order.provider';
 import addressProvider from '../providers/address.provider';
+
+const stripePromise = loadStripe('pk_test_51HIDjLIUBv7LZRyQbGW05sT6n4VFjzafHyTzRL0LrvzLJzY3P2XBxc8QTnXwfL5zlhtbwlJpgOBvszpD3C4MgQiV00K1ebaHok');
 
 class OrderPage extends Component {
   state = {
@@ -23,6 +28,7 @@ class OrderPage extends Component {
     this.addBillingAddress = this.addBillingAddress.bind(this);
     this.addShippingAddress = this.addShippingAddress.bind(this);
     this.onShippingAddressToggleChange = this.onShippingAddressToggleChange.bind(this);
+    this.onCheckoutDone = this.onCheckoutDone.bind(this);
   }
 
   componentDidMount() { 
@@ -86,6 +92,10 @@ class OrderPage extends Component {
     }
   }
 
+  onCheckoutDone(order) {
+    this.setState({ order });
+  }
+
   render() {
     if (!this.state.order) {
       return (
@@ -108,6 +118,7 @@ class OrderPage extends Component {
                 <AddressForm 
                   address={this.state.order.billingAddress} 
                   onAddressResolved={this.addBillingAddress}
+                  readOnly={this.state.order.done}
                 />
               </ListGroup.Item>
               <ListGroup.Item>
@@ -118,28 +129,57 @@ class OrderPage extends Component {
                   checked={this.state.billingIsShippingAddress}
                   onChange={this.onShippingAddressToggleChange} 
                   label="Shipping address is the same as my billing address" 
+                  disabled={this.state.order.done}
                 />
-                <AddressForm 
-                  address={this.state.order.shippingAddress} 
-                  onAddressResolved={this.addShippingAddress}
-                  disabled={this.state.billingIsShippingAddress}
-                />
+                {
+                  !this.state.billingIsShippingAddress &&
+                  <AddressForm 
+                    address={this.state.order.shippingAddress} 
+                    onAddressResolved={this.addShippingAddress}
+                    disabled={this.state.billingIsShippingAddress}
+                    readOnly={this.state.order.done}
+                  />
+                }
               </ListGroup.Item>
-              <ListGroup.Item>
-                <h5 className="mb-4">Payment</h5>
-              </ListGroup.Item>
+              {
+                !this.state.order.done &&
+                <ListGroup.Item>
+                  <h5 className="mb-4">Payment</h5>
+                  <Elements stripe={stripePromise}>
+                    <ElementsConsumer>
+                      {
+                        ({ elements, stripe }) => (
+                          <CheckoutForm 
+                            elements={elements} 
+                            stripe={stripe} 
+                            order={this.state.order} 
+                            onCheckoutDone={this.onCheckoutDone}
+                          />
+                        )
+                      }
+                    </ElementsConsumer>
+                  </Elements>
+                </ListGroup.Item>
+              }
             </ListGroup>
-            <Card.Footer className="text-right">
-              <Button variant="primary">Checkout</Button>
-              <Button variant="outline-danger" className="ml-2">Cancel & Delete</Button>
+            <Card.Footer>
+              <small className="text-success">
+                <FontAwesomeIcon icon={faCheckCircle}></FontAwesomeIcon>&nbsp;
+                Order completed on&nbsp;
+                {new Date(this.state.order.updated).toDateString()} at&nbsp;
+                {new Date(this.state.order.updated).toLocaleTimeString()}
+              </small>
             </Card.Footer>
           </Card>
         </Col>
         <Col>     
           <OrderSummary order={this.state.order} />
-          <div className="mt-2">
-            <DiscountCodeChecker onDiscountCodeChecked={this.addDiscountCode} />
-          </div>
+          {
+            !this.state.order.done &&
+            <div className="mt-2">
+              <DiscountCodeChecker onDiscountCodeChecked={this.addDiscountCode} />
+            </div>
+          }
         </Col>
       </Row>
     );

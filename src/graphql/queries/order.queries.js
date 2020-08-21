@@ -22,7 +22,9 @@ export const ORDER = gql`
     order(id: $id) {
       pk
       id
+      done
       total
+      updated
       billingAddress {
         pk
         id

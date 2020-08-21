@@ -41,6 +41,15 @@ class OrderProvider {
     });
     return res.data.updateOrder;
   }
+
+  async completeCheckout(orderId) {
+    let res = await apollo.mutate({
+      mutation: mutations.COMPLETE_CHECKOUT,
+      variables: { orderId }
+    });
+
+    return res.data.completeCheckout;
+  }
 }
 
 export default new OrderProvider();
