@@ -170,7 +170,7 @@ class AddressForm extends Component {
         <div className="text-right">
           {
             !this.props.readOnly &&
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={this.state.loading}>
               { 
                 this.state.loading 
                 ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> 

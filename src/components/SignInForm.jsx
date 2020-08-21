@@ -117,7 +117,7 @@ class SignInForm extends Component {
           </Form.Control.Feedback>
         </Form.Group>
         { this.getErrorFeedbackDOM('nonFieldErrors') }
-        <Button type="submit" block>
+        <Button type="submit" block disabled={this.state.loading}>
           { 
             this.state.loading 
             ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> 
