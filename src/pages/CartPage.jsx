@@ -92,6 +92,20 @@ class CartPage extends Component {
       });
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({ loading: true });
+
+    let cartId = props.match.params.id;
+    cartsProvider.getCart(cartId)
+      .then(cart => {
+        this.setState({ loading: false });
+
+        if (cart) {
+          this.setState({ cart });
+        }
+      });
+  }
+
   render() {
     const cart = this.state.cart;
 

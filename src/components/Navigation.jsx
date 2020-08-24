@@ -58,9 +58,7 @@ class Navigation extends Component {
                         />
                         <Media.Body>
                           <div className="d-flex align-items-center">
-                            <div className="flex-grow-1">
-                              <Link to={`/cart/${cart.id}`}>{cart.store.name}</Link>
-                            </div>
+                            <div className="flex-grow-1">{cart.store.name}</div>
                           </div>
                         </Media.Body>
                       </Media>

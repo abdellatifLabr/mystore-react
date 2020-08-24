@@ -1,6 +1,6 @@
 import { types } from '../actions/carts.actions'
 
-const initialState = null;
+const initialState = [];
 
 const cartsReducer = (state = initialState, action) => {
   let { type, payload } = action;
