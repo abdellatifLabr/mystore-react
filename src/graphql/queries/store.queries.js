@@ -47,7 +47,6 @@ export const STORE = gql`
             }
             price {
               value
-              currency 
             }
             store {
               pk

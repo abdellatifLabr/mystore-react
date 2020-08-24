@@ -10,7 +10,12 @@ import {
   Button, 
   Container, 
   InputGroup,
-  Badge
+  Badge,
+  OverlayTrigger,
+  Popover,
+  ListGroup,
+  Media,
+  Image
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -32,6 +37,46 @@ class Navigation extends Component {
   }
   
   render() {
+    let popover = (
+      <Popover className="w-25">
+        <Popover.Title as="h3">Carts</Popover.Title>
+        <Popover.Content className="p-0">
+          <ListGroup variant="flush">
+            {
+              this.props.carts &&
+              this.props.carts.map(cart => (
+                <Link to={`/cart/${cart.id}`} key={cart.id}>
+                  <ListGroup.Item action className="d-flex justify-content-between">
+                    <div>
+                      <Media className="d-flex align-items-center">
+                        <Image
+                          width={32}
+                          height={32}
+                          className="mr-3 rounded-circle"
+                          src={cart.store.logo.original}
+                          alt={cart.store.name}
+                        />
+                        <Media.Body>
+                          <div className="d-flex align-items-center">
+                            <div className="flex-grow-1">
+                              <Link to={`/cart/${cart.id}`}>{cart.store.name}</Link>
+                            </div>
+                          </div>
+                        </Media.Body>
+                      </Media>
+                    </div>
+                    <div>
+                      <Badge pill size="sm" variant="secondary">{cart.itemsCount}</Badge>
+                    </div>
+                  </ListGroup.Item>
+                </Link>
+              ))
+            }
+          </ListGroup>
+        </Popover.Content>
+      </Popover>
+    );
+
     return (
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container>
@@ -55,18 +100,12 @@ class Navigation extends Component {
             {
               this.props.user 
               ? <Nav>
-                  <Link to="/cart">
-                  <Nav.Link as="div">
+                  <Nav.Link as="div" className={this.props.carts.length > 0 ? 'text-primary' : ''}>
+                    <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
                       <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                      {
-                        this.props.cart.length > 0 &&
-                        <Badge pill variant="primary" className="">
-                          {this.props.cart.length}
-                        </Badge>
-                      }
+                    </OverlayTrigger>
                   </Nav.Link>
-                  </Link>
-                  <NavDropdown title={this.props.user.firstName} id="basic-nav-dropdown">
+                  <NavDropdown title={this.props.user.firstName} id="user-nav-dropdown">
                     <NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.1">Dashboard</NavDropdown.Item>
                     <NavDropdown.Item as="div">Settings</NavDropdown.Item>
@@ -92,7 +131,7 @@ class Navigation extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  cart: state.cart
+  carts: state.carts
 });
 
 export default connect(mapStateToProps, {})(withRouter(Navigation));

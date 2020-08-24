@@ -4,8 +4,8 @@ import { InputGroup, Button, FormControl } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
-import cartProvider from '../providers/cart.provider';
-import { updateCartProduct } from '../store/actions/cart.actions';
+import cartsProvider from '../providers/carts.provider';
+import { updateCart } from '../store/actions/carts.actions';
 
 class QuantityControl extends Component {
   constructor(props) {
@@ -16,19 +16,21 @@ class QuantityControl extends Component {
   }
 
   increaseQuantity() {
-    cartProvider.updateCartProduct(this.props.cartProduct.pk, { quantity: this.props.cartProduct.quantity + 1 })
+    cartsProvider.updateCartProduct(this.props.cartProduct.pk, { quantity: this.props.cartProduct.quantity + 1 })
       .then(data => {
         if (data.success) {
-          this.props.updateCartProduct(data.cartProduct);
+          this.props.updateCart(data.cart);
+          this.props.onUpdate(data.cart);
         }
       });
   }
 
   decreaseQuantity() {
-    cartProvider.updateCartProduct(this.props.cartProduct.pk, { quantity: this.props.cartProduct.quantity - 1 })
+    cartsProvider.updateCartProduct(this.props.cartProduct.pk, { quantity: this.props.cartProduct.quantity - 1 })
       .then(data => {
         if (data.success) {
-          this.props.updateCartProduct(data.cartProduct);
+          this.props.updateCart(data.cart);
+          this.props.onUpdate(data.cart);
         }
       });
   }
@@ -69,4 +71,4 @@ const mapStateToProps = state => ({
   cart: state.cart
 });
 
-export default connect(mapStateToProps, { updateCartProduct })(QuantityControl);
+export default connect(mapStateToProps, { updateCart })(QuantityControl);

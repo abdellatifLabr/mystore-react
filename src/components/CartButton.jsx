@@ -4,12 +4,12 @@ import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
-import cartProvider from '../providers/cart.provider';
-import { addProductToCart, removeProductFromCart } from '../store/actions/cart.actions';
+import cartsProvider from '../providers/carts.provider';
+import { addCart, removeCart, updateCart } from '../store/actions/carts.actions';
 
 class CartButton extends Component {
   state = {
-    inCart: false,
+    cartProduct: null,
     loading: false
   };
 
@@ -23,13 +23,18 @@ class CartButton extends Component {
   onAddToCartClick() {
     this.setState({ loading: true });
 
-    cartProvider.createCartProduct(this.props.product.pk)
+    cartsProvider.createCartProduct(this.props.product.pk)
       .then(data => {
         this.setState({ loading: false });
 
         if (data.success) {
-          this.props.addProductToCart(data.cartProduct);
-          this.setState({ inCart: true });
+          this.setState({ cartProduct: data.cartProduct });
+
+          if (data.isNewCart) {
+            this.props.addCart(data.cart);
+          } else {
+            this.props.updateCart(data.cart);
+          }
         }
       });
   }
@@ -37,24 +42,34 @@ class CartButton extends Component {
   onRemoveFromCartClick() {
     this.setState({ loading: true });
 
-    cartProvider.deleteCartProduct(this.props.product.pk)
+    cartsProvider.deleteCartProduct(this.state.cartProduct.pk)
       .then(data => {
         this.setState({ loading: false });
 
         if (data.success) {
-          this.props.removeProductFromCart(this.props.product.id);
-          this.setState({ inCart: false });
+          if (data.isLastItem) {
+            this.props.removeCart(this.state.cartProduct.cart);
+          } else {
+            this.props.updateCart(data.cart);
+          }
+
+          this.setState({ cartProduct: null });
         }
       });
   }
 
   componentDidMount() {
-    let inCart = this.props.cart.some(cartProduct => cartProduct.product.id === this.props.product.id);
-    this.setState({ inCart });
+    this.props.carts.forEach(cart => {
+      cart.cartProducts.edges.map(edge => edge.node).forEach(cartProduct => {
+        if (cartProduct.product.id === this.props.product.id) {
+          this.setState({ cartProduct });
+        }
+      });
+    });
   }
 
   render() {
-    let inCart = this.state.inCart;
+    let inCart = !!(this.state.cartProduct);
 
     if (this.props.product.unitsLeft === 0) {
       return <strong className="text-warning">SOLD OUT</strong>
@@ -78,7 +93,7 @@ class CartButton extends Component {
 }
 
 const mapStateToProps = state => ({
-  cart: state.cart
+  carts: state.carts
 });
 
-export default connect(mapStateToProps, { addProductToCart, removeProductFromCart })(CartButton);
+export default connect(mapStateToProps, { addCart, removeCart, updateCart })(CartButton);

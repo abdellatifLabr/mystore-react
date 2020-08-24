@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Card, Media, Image, ListGroup, Row, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import { removeProductFromCart, clearCart } from '../store/actions/cart.actions';
-import QuantityControl from '../components/QuantityControl';
-import CartButton from '../components/CartButton';
-import CartSummary from '../components/CartSummary';
+import cartsProvider from '../providers/carts.provider';
 import orderProvider from '../providers/order.provider';
-import cartProvider from '../providers/cart.provider';
+import QuantityControl from '../components/QuantityControl';
+import CartSummary from '../components/CartSummary';
+import { updateCart, removeCart } from '../store/actions/carts.actions';
 
 class CartPage extends Component {
   state = {
-    loading: false
+    loading: false,
+    cart: null
   };
 
   constructor(props) {
     super(props);
 
     this.onProceedToCheckoutClick = this.onProceedToCheckoutClick.bind(this);
+    this.onRemoveClick = this.onRemoveClick.bind(this);
+    this.onCartProductUpdated = this.onCartProductUpdated.bind(this);
   }
 
   onProceedToCheckoutClick() {
@@ -48,8 +51,7 @@ class CartPage extends Component {
         await orderProvider.createOrderItem(orderId, quantity, productId);
       });
       
-      await cartProvider.deleteAllCartProducts();
-      this.props.clearCart();
+      await cartsProvider.deleteAllCartProducts();
 
       return createOrder.order;
     }
@@ -57,18 +59,82 @@ class CartPage extends Component {
     return;
   }
 
+  onRemoveClick(cartProductId) {
+    cartsProvider.deleteCartProduct(cartProductId)
+      .then(data => {
+        if (data.success) {
+          if (data.isLastItem) {
+            this.props.removeCart(this.state.cart);
+            this.props.history.push('/');
+          } else {
+            this.setState({ cart: data.cart });
+            this.props.updateCart(data.cart);
+          }
+        }
+      });
+  }
+
+  onCartProductUpdated(cart) {
+    this.setState({ cart });
+  }
+
+  componentDidMount() {
+    this.setState({ loading: true });
+
+    let cartId = this.props.match.params.id;
+    cartsProvider.getCart(cartId)
+      .then(cart => {
+        this.setState({ loading: false });
+
+        if (cart) {
+          this.setState({ cart });
+        }
+      });
+  }
+
   render() {
-    if (this.props.cart.length == 0) {
-      return <h4 className="text-secondary text-center">Your cart is empty</h4>
+    const cart = this.state.cart;
+
+    if (!cart) {
+      return (
+        <h4 className="text-secondary text-center">
+          {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'This cart doesn\'t exist'}
+        </h4>
+      );
     }
     
     return (
-      <Row>
+      <Row className="mb-3" key={cart.id}>
         <Col md={9}>
           <Card>
-            <ListGroup>
-              {this.props.cart.map(cartProduct => (
+            <Card.Header>
+            <Media className="d-flex align-items-center">
+              <Image
+                width={32}
+                height={32}
+                className="mr-3"
+                src={cart.store.logo.original}
+                alt={cart.store.name}
+                roundedCircle
+                fluid
+              />
+              <Media.Body>
+                <div className="d-flex align-items-center">
+                  <div className="flex-grow-1">
+                    <Link to={`/store/${cart.store.id}`}>{cart.store.name}</Link> 
+                  </div>
+                </div>
+              </Media.Body>
+            </Media>
+            </Card.Header>
+            <ListGroup variant="flush">
+              {cart.cartProducts.edges.map(edge => edge.node).map((cartProduct) => (
                 <ListGroup.Item key={cartProduct.id} className="d-flex">
+                  <div>
+                    <Button variant="link" className="text-danger p-0 mr-2" onClick={() => this.onRemoveClick(cartProduct.pk)}>
+                      <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
+                    </Button>
+                  </div>
                   <div className="w-25">
                     <Image src={cartProduct.product.pictures[0].original} fluid></Image>
                   </div>
@@ -76,21 +142,14 @@ class CartPage extends Component {
                     <div>
                       <h4>{cartProduct.product.name}</h4>
                       <p className="text-secondary">{cartProduct.product.description}</p>
-                      <span className="font-weight-bold">
-                        {cartProduct.product.price.value} &nbsp;
-                        {cartProduct.product.price.currency}
-                      </span>
-                    </div>
-                    <div>
-                      <CartButton product={cartProduct.product} size="sm" />
+                      <span className="font-weight-bold">{cartProduct.product.price.value}</span>
                     </div>
                   </div>
                   <div>
-                    <QuantityControl cartProduct={cartProduct} size="sm" />
+                    <QuantityControl cartProduct={cartProduct} onUpdate={this.onCartProductUpdated} size="sm" />
                   </div>
                   <div className="text-success font-weight-bold">
-                    {cartProduct.quantity * cartProduct.product.price.value} &nbsp;
-                    {cartProduct.product.price.currency}
+                    {cartProduct.cost}
                   </div>
                 </ListGroup.Item>
               ))}
@@ -98,8 +157,14 @@ class CartPage extends Component {
           </Card>
         </Col>
         <Col>
-          <CartSummary />
-          <Button variant="primary" className="mt-2" block disabled={this.state.loading} onClick={this.onProceedToCheckoutClick}>
+          <CartSummary cart={cart} />
+          <Button 
+            variant="primary" 
+            className="mt-2" 
+            block 
+            disabled={this.state.loading} 
+            onClick={this.onProceedToCheckoutClick}
+          >
             {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'Proceed to Checkout'}
           </Button>
         </Col>
@@ -108,8 +173,4 @@ class CartPage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  cart: state.cart
-});
-
-export default connect(mapStateToProps, { removeProductFromCart, clearCart })(CartPage);
+export default connect(null, { updateCart, removeCart })(CartPage);

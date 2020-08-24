@@ -7,8 +7,6 @@ import CartButton from '../components/CartButton';
 class ProductCard extends Component {
   render() {
     let product = this.props.product;
-    let price = product.price.value;
-    let currency = product.price.currency;
 
     return (
       <Card>
@@ -20,7 +18,7 @@ class ProductCard extends Component {
         </Card.Body>
         <Card.Footer>
           <div className="d-flex justify-content-between">
-            <strong>{price} {currency}</strong>
+            <strong>{product.price.value}</strong>
             <div>
               <CartButton size="sm" product={product} />
             </div>

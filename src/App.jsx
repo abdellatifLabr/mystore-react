@@ -26,7 +26,7 @@ class App extends Component {
             <Route path="/signin" component={SignInPage} exact />
             <Route path="/activate/:token" component={ActivationPage} exact />
             <Route path="/store/:id" component={StorePage} exact />
-            <Route path="/cart" component={CartPage} exact />
+            <Route path="/cart/:id" component={CartPage} exact />
             <Route path="/order/:id" component={OrderPage} exact />
           </Switch>
         </Container>

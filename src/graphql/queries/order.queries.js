@@ -64,8 +64,9 @@ export const ORDER = gql`
             product {
               name
               price {
-                value
-                currency
+                amount
+                display
+                valueCurrency
               }
               store {
                 pk
