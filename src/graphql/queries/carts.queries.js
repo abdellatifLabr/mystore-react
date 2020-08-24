@@ -25,7 +25,6 @@ export const CARTS = gql`
           pk
           id
           total
-          itemsCount
           cartProducts {
             edges {
               node {
@@ -62,7 +61,6 @@ export const CART = gql`
       pk
       id
       total
-      itemsCount
       store {
         pk
         id

@@ -46,7 +46,7 @@ class Navigation extends Component {
               this.props.carts &&
               this.props.carts.map(cart => (
                 <Link to={`/cart/${cart.id}`} key={cart.id}>
-                  <ListGroup.Item action className="d-flex justify-content-between">
+                  <ListGroup.Item action className="d-flex justify-content-between align-items-center">
                     <div>
                       <Media className="d-flex align-items-center">
                         <Image
@@ -66,7 +66,7 @@ class Navigation extends Component {
                       </Media>
                     </div>
                     <div>
-                      <Badge pill size="sm" variant="secondary">{cart.itemsCount}</Badge>
+                      <Badge size="sm" variant="info">{cart.cartProducts.edges.length}</Badge>
                     </div>
                   </ListGroup.Item>
                 </Link>
@@ -101,7 +101,7 @@ class Navigation extends Component {
               this.props.user 
               ? <Nav>
                   <Nav.Link as="div" className={this.props.carts.length > 0 ? 'text-primary' : ''}>
-                    <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
+                    <OverlayTrigger rootClose trigger="click" placement="bottom" overlay={popover}>
                       <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
                     </OverlayTrigger>
                   </Nav.Link>

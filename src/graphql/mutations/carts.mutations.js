@@ -25,7 +25,6 @@ export const CREATE_CART_PRODUCT = gql`
         pk
         id
         total
-        itemsCount
         cartProducts {
           edges {
             node {
@@ -64,7 +63,6 @@ export const DELETE_CART_PRODUCT = gql`
         pk
         id
         total
-        itemsCount
         cartProducts {
           edges {
             node {
@@ -125,7 +123,6 @@ export const UPDATE_CART_PRODUCT = gql`
         pk
         id
         total
-        itemsCount
         cartProducts {
           edges {
             node {
