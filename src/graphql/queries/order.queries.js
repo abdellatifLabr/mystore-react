@@ -25,6 +25,10 @@ export const ORDER = gql`
       done
       total
       updated
+      store {
+        pk
+        id
+      }
       billingAddress {
         pk
         id
@@ -48,9 +52,6 @@ export const ORDER = gql`
             id
             code
             value
-            store {
-              name
-            }
           }
         }
       }
@@ -64,9 +65,7 @@ export const ORDER = gql`
             product {
               name
               price {
-                amount
-                display
-                valueCurrency
+                value
               }
               store {
                 pk

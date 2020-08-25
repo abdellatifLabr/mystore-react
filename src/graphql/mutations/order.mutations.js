@@ -1,8 +1,12 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_ORDER = gql`
-  mutation CreateOrder {
-    createOrder(input: {}) {
+  mutation CreateOrder($cartId: ID!) {
+    createOrder(
+      input: {
+        cartId: $cartId
+      }
+    ) {
       success
       order {
         pk
@@ -48,12 +52,17 @@ export const UPDATE_ORDER = gql`
       }
     ) {
       success
+      errors
       order {
         pk
         id
         done
         total
         updated
+        store {
+          pk
+          id
+        }
         billingAddress {
           pk
           id
@@ -77,11 +86,6 @@ export const UPDATE_ORDER = gql`
               id
               code
               value
-              store {
-                pk
-                id
-                name
-              }
             }
           }
         }
@@ -95,9 +99,7 @@ export const UPDATE_ORDER = gql`
               product {
                 name
                 price {
-                  amount
-                  display
-                  valueCurrency
+                  value
                 }
                 store {
                   pk
@@ -120,6 +122,7 @@ export const COMPLETE_CHECKOUT = gql`
       }
     ) {
       success
+      errors
       clientSecret
     }
   }

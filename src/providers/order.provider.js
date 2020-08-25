@@ -11,9 +11,10 @@ class OrderProvider {
     return res.data.discountCodes.edges[0].node;
   }
 
-  async createOrder() {
+  async createOrder(cartId) {
     let res = await apollo.mutate({
-      mutation: mutations.CREATE_ORDER
+      mutation: mutations.CREATE_ORDER,
+      variables: { cartId }
     });
     return res.data.createOrder;
   }

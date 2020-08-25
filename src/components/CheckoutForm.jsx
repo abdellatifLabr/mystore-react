@@ -25,7 +25,7 @@ class CheckoutForm extends Component {
 
   state = {
     loading: false,
-    error: null
+    errors: null
   };
 
   constructor(props) {
@@ -50,11 +50,11 @@ class CheckoutForm extends Component {
       return;
     }
 
-    this.setState({ loading: true });
+    this.setState({ loading: true, errors: null });
 
     let cardElement = elements.getElement(CardElement);
 
-    let { success, clientSecret } = await orderProvider.completeCheckout(order.pk);
+    let { success, errors, clientSecret } = await orderProvider.completeCheckout(order.pk);
 
     if (success) {
       let billingDetails = {
@@ -77,7 +77,9 @@ class CheckoutForm extends Component {
       if (paymentMethodReq.error) {
         this.setState({
           loading: false,
-          error: paymentMethodReq.error.message
+          errors: {
+            'nonFieldErrors': [paymentMethodReq.error.message]
+          }
         });
         return;
       }
@@ -89,19 +91,27 @@ class CheckoutForm extends Component {
       if (error) {
         this.setState({
           loading: false,
-          error: error.message
+          errors: {
+            'nonFieldErrors': [error.message]
+          }
         });
         return;
       }
 
       this.setState({ loading: false });
 
-      let data = orderProvider.updateOrder(order.pk, { done: true, stripePaymentId: id });
+      let data = await orderProvider.updateOrder(order.pk, { done: true, stripePaymentId: id });
 
       if (data.success) {
         return data.order;
       }
 
+      if (data.errors) {
+        this.setState({ errors: data.errors });
+      }
+
+    } else {
+      this.setState({ loading: false, errors });
     }
   } 
 
@@ -109,6 +119,14 @@ class CheckoutForm extends Component {
     return (
       <div>
         <CardElement options={this.CARD_OPTIONS} />
+        {
+          this.state.errors &&
+          <ul className="text-danger my-2">
+            {this.state.errors['nonFieldErrors'].map(error => (
+              <li>{ error.message || error }</li>
+            ))}
+          </ul>
+        }
         <div className="mt-3 text-right">
           <Button variant="primary" disabled={this.state.loading} onClick={this.onCompleteCheckoutClick}>
             { 
