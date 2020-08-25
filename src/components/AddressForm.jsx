@@ -62,7 +62,7 @@ class AddressForm extends Component {
       data = await addressProvider.createAddress(address);
     }
     
-    if (data.success) this.props.onAddressResolved(address);
+    if (data.success) this.props.onAddressResolved(data.address);
 
     if (data.errors) this.setState({ errors: data.errors });
   }
