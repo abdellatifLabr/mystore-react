@@ -63,6 +63,15 @@ class CartsProvider {
 
     return res.data.cart;
   }
+
+  async deleteCart(cartId) {
+    let res = await apollo.mutate({
+      mutation: mutations.DELETE_CART,
+      variables: { cartId }
+    });
+
+    return res.data.deleteCart;
+  }
 }
 
 export default new CartsProvider();

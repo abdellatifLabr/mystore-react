@@ -174,3 +174,19 @@ export const DELETE_ALL_CART_PRODUCTS = gql`
     }
   }
 `;
+
+export const DELETE_CART = gql`
+  mutation DeleteCart($cartId: ID!) {
+    deleteCart(
+      input: {
+        cartId: $cartId
+      }
+    ) {
+      success
+      cart {
+        pk
+        id
+      }
+    }
+  }
+`;
