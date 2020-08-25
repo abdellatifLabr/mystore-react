@@ -43,32 +43,35 @@ class Navigation extends Component {
         <Popover.Content className="p-0">
           <ListGroup variant="flush">
             {
-              this.props.carts &&
-              this.props.carts.map(cart => (
-                <Link to={`/cart/${cart.id}`} key={cart.id}>
-                  <ListGroup.Item action className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <Media className="d-flex align-items-center">
-                        <Image
-                          width={32}
-                          height={32}
-                          className="mr-3 rounded-circle"
-                          src={cart.store.logo.original}
-                          alt={cart.store.name}
-                        />
-                        <Media.Body>
-                          <div className="d-flex align-items-center">
-                            <div className="flex-grow-1">{cart.store.name}</div>
-                          </div>
-                        </Media.Body>
-                      </Media>
-                    </div>
-                    <div>
-                      <Badge size="sm" variant="info">{cart.cartProducts.edges.length}</Badge>
-                    </div>
-                  </ListGroup.Item>
-                </Link>
-              ))
+              this.props.carts.length > 0 ? (
+                this.props.carts.map(cart => (
+                  <Link to={`/cart/${cart.id}`} key={cart.id}>
+                    <ListGroup.Item action className="d-flex justify-content-between align-items-center">
+                      <div>
+                        <Media className="d-flex align-items-center">
+                          <Image
+                            width={32}
+                            height={32}
+                            className="mr-3 rounded-circle"
+                            src={cart.store.logo.original}
+                            alt={cart.store.name}
+                          />
+                          <Media.Body>
+                            <div className="d-flex align-items-center">
+                              <div className="flex-grow-1">{cart.store.name}</div>
+                            </div>
+                          </Media.Body>
+                        </Media>
+                      </div>
+                      <div>
+                        <Badge size="sm" variant="info">{cart.cartProducts.edges.length}</Badge>
+                      </div>
+                    </ListGroup.Item>
+                  </Link>
+                ))
+              ) : (
+                <div className="p-2 text-center text-secondary">No carts available</div>
+              )
             }
           </ListGroup>
         </Popover.Content>
