@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 import discountCodeProvider from '../providers/discountCode.provider';
 
 class DiscountCodeChecker extends Component {
   state = {
+    loading: false,
     errors: null,
     code: ''
   };
@@ -24,20 +27,19 @@ class DiscountCodeChecker extends Component {
 
   checkDiscountCode() {
     this.setState({
-      error: null
+      error: null,
+      loading: true
     });
 
-    discountCodeProvider.getDiscountCode(this.state.code)
+    discountCodeProvider.getDiscountCode(this.state.code, this.props.order.store.id)
       .then(discountCode => {
+        this.setState({ loading: false });
+
         if (discountCode) {
-          if (discountCode.expired) {
-            this.setState({ error: 'Discount code expired!' });
-          } else {
-            this.setState({ code: '' });
-            this.props.onDiscountCodeChecked(discountCode);
-          } 
+          this.setState({ code: '' });
+          this.props.onDiscountCodeChecked(discountCode);
         } else {
-          this.setState({ error: 'This code desn\'t exist' });
+          this.setState({ error: 'This code is expired or desn\'t exist' });
         }
       });
   }
@@ -54,8 +56,12 @@ class DiscountCodeChecker extends Component {
           onChange={this.handleCodeChange}
         />
         <InputGroup.Append>
-          <Button variant="success" onClick={this.checkDiscountCode}>
-            Redeem
+          <Button variant="success" disabled={this.state.loading} onClick={this.checkDiscountCode}>
+            { 
+              this.state.loading 
+              ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> 
+              : 'Redeem'
+            }
           </Button>
         </InputGroup.Append>
       </InputGroup>
