@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, ListGroup, Form } from 'react-bootstrap';
+import { Row, Col, Card, ListGroup, Form, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { loadStripe } from '@stripe/stripe-js';
@@ -18,6 +18,7 @@ class OrderPage extends Component {
   state = {
     order: null,
     loading: false,
+    errors: null,
     billingIsShippingAddress: false
   };
 
@@ -107,6 +108,14 @@ class OrderPage extends Component {
 
     return (
       <Row>
+        {
+          this.state.errors &&
+          <Col md={9}>
+            {this.state.errors['nonFieldErrors'].map(error => (
+              <Alert variant="danger" key={error.code}>{error.message}</Alert>
+            ))}
+          </Col>
+        }
         <Col md={9}>
           <Card>
             <Card.Header className="text-center">
@@ -162,14 +171,17 @@ class OrderPage extends Component {
                 </ListGroup.Item>
               }
             </ListGroup>
-            <Card.Footer>
-              <small className="text-success">
-                <FontAwesomeIcon icon={faCheckCircle}></FontAwesomeIcon>&nbsp;
-                Order completed on&nbsp;
-                {new Date(this.state.order.updated).toDateString()} at&nbsp;
-                {new Date(this.state.order.updated).toLocaleTimeString()}
-              </small>
-            </Card.Footer>
+            {
+              this.state.order.done &&
+              <Card.Footer>
+                <small className="text-success">
+                  <FontAwesomeIcon icon={faCheckCircle}></FontAwesomeIcon>&nbsp;
+                  Order completed on&nbsp;
+                  {new Date(this.state.order.updated).toDateString()} at&nbsp;
+                  {new Date(this.state.order.updated).toLocaleTimeString()}
+                </small>
+              </Card.Footer>
+            }
           </Card>
         </Col>
         <Col>     
@@ -177,7 +189,7 @@ class OrderPage extends Component {
           {
             !this.state.order.done &&
             <div className="mt-2">
-              <DiscountCodeChecker onDiscountCodeChecked={this.addDiscountCode} />
+              <DiscountCodeChecker order={this.state.order} onDiscountCodeChecked={this.addDiscountCode} />
             </div>
           }
         </Col>
