@@ -12,6 +12,7 @@ import ActivationPage from './pages/ActivationPage';
 import StorePage from './pages/StorePage';
 import CartPage from './pages/CartPage';
 import OrderPage from './pages/OrderPage';
+import DashboardPage from './pages/DashboardPage';
 
 class App extends Component {
   render() {
@@ -28,6 +29,7 @@ class App extends Component {
             <Route path="/store/:id" component={StorePage} exact />
             <Route path="/cart/:id" component={CartPage} exact />
             <Route path="/order/:id" component={OrderPage} exact />
+            <Route path="/dashboard" component={DashboardPage} exact />
           </Switch>
         </Container>
       </BrowserRouter>

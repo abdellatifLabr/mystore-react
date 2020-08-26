@@ -108,7 +108,9 @@ class Navigation extends Component {
                   </Nav.Link>
                   <NavDropdown title={this.props.user.firstName} id="user-nav-dropdown">
                     <NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.1">Dashboard</NavDropdown.Item>
+                    <Link to="/dashboard">
+                    <NavDropdown.Item as="div">Dashboard</NavDropdown.Item>
+                    </Link>
                     <NavDropdown.Item as="div">Settings</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={this.onSignOutClick}>Sign Out</NavDropdown.Item>
