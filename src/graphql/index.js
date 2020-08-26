@@ -14,14 +14,14 @@ const authLink = setContext(async (req, { headers }) => {
   if (req.operationName === 'RefreshToken') return;
 
   if (userProvider.isTokenExpired(currToken)) {
-    let { success, errors, token } = await userProvider.refreshToken()
+    try {
+      let { success, token } = await userProvider.refreshToken()
 
-    if (success) {
-      localStorage.setItem('access', token);
-      currToken = token;
-    }
-
-    if (errors) {
+      if (success) {
+        localStorage.setItem('access', token);
+        currToken = token;
+      }
+    } catch (error) {
       userProvider.signOut();
     }
   }
