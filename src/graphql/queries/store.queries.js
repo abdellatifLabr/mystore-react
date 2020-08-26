@@ -56,6 +56,9 @@ export const STORE = gql`
               pk
               id
               name
+              logo {
+                original
+              }
             }
           }
         }

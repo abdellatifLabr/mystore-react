@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Media, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import CartButton from '../components/CartButton';
@@ -10,6 +10,26 @@ class ProductCard extends Component {
 
     return (
       <Card>
+        <Card.Header>
+          <Media className="d-flex align-items-center">
+            <Image
+              width={32}
+              height={32}
+              className="mr-3"
+              src={product.store.logo.original}
+              alt={product.store.name}
+              roundedCircle
+              fluid
+            />
+            <Media.Body>
+              <div className="d-flex align-items-center">
+                <div className="flex-grow-1">
+                  <Link to={`/store/${product.store.id}`}>{product.store.name}</Link> 
+                </div>
+              </div>
+            </Media.Body>
+          </Media>
+        </Card.Header>
         <Card.Img variant="top" src={product.pictures[0].original} />
         <Card.Body>
           <strong>
