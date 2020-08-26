@@ -28,7 +28,7 @@ class StoreCard extends Component {
                 </div>
                 <div>
                   {
-                    this.props.user &&
+                    this.props.user && this.props.user.id != store.user.id &&
                     <SubscribeButton store={store} size="sm" />
                   }
                 </div>

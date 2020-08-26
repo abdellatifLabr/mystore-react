@@ -15,6 +15,10 @@ export const STORES = gql`
           logo {
             original
           }
+          user {
+            id
+            pk
+          }
         }
       }
     }
@@ -55,6 +59,10 @@ export const STORE = gql`
             }
           }
         }
+      }
+      user {
+        pk
+        id
       }
     }
   }

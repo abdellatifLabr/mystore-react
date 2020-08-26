@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Row, Col, Card, Media, ListGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
@@ -60,7 +61,10 @@ class StorePage extends Component {
                               <h4 className="m-0">{store.name}</h4>
                             </div>
                             <div>
-                              <SubscribeButton store={store} />
+                              {
+                                this.props.user && this.props.user.id != store.user.id &&
+                                <SubscribeButton store={store} />
+                              }
                             </div>
                           </div>
                         </Media.Body>
@@ -102,4 +106,8 @@ class StorePage extends Component {
   }
 }
 
-export default StorePage;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, {})(StorePage);
