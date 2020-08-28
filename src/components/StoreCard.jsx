@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Media } from 'react-bootstrap';
+import { Card, Media, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -13,25 +13,25 @@ class StoreCard extends Component {
       <Card>
         <Card.Img variant="top" src={store.cover.original} />
         <Card.Body>
-          <Media>
-            <img
+          <Media className="d-flex align-items-center">
+            <Image
               width={32}
               height={32}
-              className="mr-2 rounded-circle"
               src={store.logo.original}
               alt={store.name}
+              fluid
+              roundedCircle
+              className="mr-2"
             />
-            <Media.Body> 
-              <div className="d-flex align-items-center">
-                <div className="flex-grow-1">
-                  <Link to={`/store/${store.id}`}>{store.name}</Link> 
-                </div>
-                <div>
-                  {
-                    this.props.user && this.props.user.id != store.user.id &&
-                    <SubscribeButton store={store} size="sm" />
-                  }
-                </div>
+            <Media.Body className="d-flex align-items-center"> 
+              <div className="flex-grow-1">
+                <Link to={`/store/${store.id}`}>{store.name}</Link> 
+              </div>
+              <div>
+                {
+                  this.props.user && this.props.user.id != store.user.id &&
+                  <SubscribeButton store={store} size="sm" />
+                }
               </div>
             </Media.Body>
           </Media>

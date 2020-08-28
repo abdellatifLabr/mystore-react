@@ -86,16 +86,16 @@ class StorePage extends Component {
                 <ListGroup.Item>
                   <Row>
                     <Col className="text-center">
-                      <div className="text-uppercase">Visits per day</div>
                       <h3 className="font-weight-bold">10k</h3>
+                      <div className="text-uppercase">Visits per day</div>
                     </Col>
                     <Col className="text-center">
-                      <div className="text-uppercase">Subscribers</div>
                       <h3 className="font-weight-bold">22.5k</h3>
+                      <div className="text-uppercase">Subscribers</div>
                     </Col>
                     <Col className="text-center">
-                      <div className="text-uppercase">Workers</div>
                       <h3 className="font-weight-bold">10</h3>
+                      <div className="text-uppercase">Workers</div>
                     </Col>
                   </Row>
                 </ListGroup.Item>

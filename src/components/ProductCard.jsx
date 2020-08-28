@@ -15,7 +15,7 @@ class ProductCard extends Component {
             <Image
               width={32}
               height={32}
-              className="mr-3"
+              className="mr-2"
               src={product.store.logo.original}
               alt={product.store.name}
               roundedCircle
@@ -37,7 +37,7 @@ class ProductCard extends Component {
           </strong>
         </Card.Body>
         <Card.Footer>
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between align-items-center">
             <strong>{product.price.value}</strong>
             <div>
               <CartButton size="sm" product={product} />

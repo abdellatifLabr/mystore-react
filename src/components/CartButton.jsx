@@ -66,7 +66,7 @@ class CartButton extends Component {
 
   componentDidMount() {
     if (this.props.user) {
-      this.props.carts.edges.map(edge => edge.node).forEach(cart => {
+      this.props.carts.forEach(cart => {
         cart.cartProducts.edges.map(edge => edge.node).forEach(cartProduct => {
           if (cartProduct.product.id === this.props.product.id) {
             this.setState({ cartProduct });

@@ -20,8 +20,8 @@ async function acquirePreRenderRequirements() {
     store.dispatch(setUser(user));
 
     let carts = await cartsProvider.getCarts();
-    if (carts) {
-      store.dispatch(setCarts(carts));
+    if (carts.edges) {
+      store.dispatch(setCarts(carts.edges.map(edge => edge.node)));
     }
   }
   return;
