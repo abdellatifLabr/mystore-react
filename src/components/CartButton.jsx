@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,6 +19,11 @@ class CartButton extends Component {
 
     this.onAddToCartClick = this.onAddToCartClick.bind(this);
     this.onRemoveFromCartClick = this.onRemoveFromCartClick.bind(this);
+    this.gotoSignIn = this.gotoSignIn.bind(this);
+  }
+
+  gotoSignIn() {
+    this.props.history.push('/signin');
   }
 
   onAddToCartClick() {
@@ -59,13 +65,15 @@ class CartButton extends Component {
   }
 
   componentDidMount() {
-    this.props.carts.edges.map(edge => edge.node).forEach(cart => {
-      cart.cartProducts.edges.map(edge => edge.node).forEach(cartProduct => {
-        if (cartProduct.product.id === this.props.product.id) {
-          this.setState({ cartProduct });
-        }
+    if (this.props.user) {
+      this.props.carts.edges.map(edge => edge.node).forEach(cart => {
+        cart.cartProducts.edges.map(edge => edge.node).forEach(cartProduct => {
+          if (cartProduct.product.id === this.props.product.id) {
+            this.setState({ cartProduct });
+          }
+        });
       });
-    });
+    }
   }
 
   render() {
@@ -80,7 +88,7 @@ class CartButton extends Component {
         variant={inCart ? 'outline-danger' : 'outline-secondary'}
         disabled={this.state.loading}
         size={this.props.size}
-        onClick={inCart ? this.onRemoveFromCartClick : this.onAddToCartClick}
+        onClick={this.props.user ? (inCart ? this.onRemoveFromCartClick : this.onAddToCartClick) : this.gotoSignIn}
       >
         { 
           this.state.loading 
@@ -93,7 +101,8 @@ class CartButton extends Component {
 }
 
 const mapStateToProps = state => ({
-  carts: state.carts
+  carts: state.carts,
+  user: state.user
 });
 
-export default connect(mapStateToProps, { addCart, removeCart, updateCart })(CartButton);
+export default connect(mapStateToProps, { addCart, removeCart, updateCart })(withRouter(CartButton));
