@@ -10,6 +10,14 @@ class StoreProvider {
     return res.data.stores.edges.map(edge => edge.node);
   }
 
+  async myStores() {
+    let res = await apollo.query({
+      query: queries.MY_STORES
+    });
+
+    return res.data.myStores;
+  }
+
   async getStore(id) {
     let res = await apollo.query({
       query: queries.STORE,
@@ -42,6 +50,18 @@ class StoreProvider {
       variables: { id }
     });
     return res.data.deleteSubscription;
+  }
+
+  async updateStore(id, fields) {
+    let res = await apollo.mutate({
+      mutation: mutations.UPDATE_STORE,
+      variables: { id, ...fields },
+      context: {
+        useMultipart: true
+      }
+    });
+
+    return res.data.updateStore;
   }
 }
 

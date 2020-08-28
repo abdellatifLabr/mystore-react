@@ -1,37 +1,60 @@
 import React, { Component } from 'react';
 import { Tab, Nav, Row, Col, Card } from 'react-bootstrap';
 
+import storeProvider from '../providers/store.provider';
+import StoreCard from '../components/StoreCard';
+
 class DashboardPage extends Component {
+  state = {
+    myStores: null
+  };
+
+  componentDidMount() {
+    storeProvider.myStores()
+      .then(myStores => {
+        this.setState({ myStores });
+      });
+  }
+
   render() {
     return (
-      <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+      <Tab.Container id="dashboard-tabs" defaultActiveKey="stores">
         <Row>
           <Col md={12}>
-            <Card>
-              <Card.Header>
-                <Nav variant="tabs" className="flex-row">
+            
+                <Nav variant="pills" className="flex-row">
                   <Nav.Item>
-                    <Nav.Link eventKey="first">Analytics</Nav.Link>
+                    <Nav.Link eventKey="analytics">Analytics</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link eventKey="second">Stores</Nav.Link>
+                    <Nav.Link eventKey="stores">Stores</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link eventKey="third">Settings</Nav.Link>
+                    <Nav.Link eventKey="settings">Settings</Nav.Link>
                   </Nav.Item>
                 </Nav>
-              </Card.Header>
-              <Card.Body>
-                <Tab.Content>
-                  <Tab.Pane eventKey="first">
-                    first
+             
+                <Tab.Content className="py-3">
+                  <Tab.Pane eventKey="analytics">
+                    analytics
                   </Tab.Pane>
-                  <Tab.Pane eventKey="second">
-                    second
+                  <Tab.Pane eventKey="stores">
+                    {
+                      this.state.myStores &&
+                      <Row>
+                        {this.state.myStores.edges.map(edge => edge.node).map(store => (
+                          <Col md={3} key={store.id}>
+                            <StoreCard store={store} />
+                          </Col>
+                        ))}
+                      </Row>
+                    }
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="settings">
+                    settings
                   </Tab.Pane>
                 </Tab.Content>
-              </Card.Body>
-            </Card>
+              
           </Col>
         </Row>
       </Tab.Container>

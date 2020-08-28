@@ -1,9 +1,10 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from '@apollo/client/link/context';
 
 import userProvider from '../providers/user.provider';
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
   uri: 'http://localhost:8000/graphql'
 });
 
@@ -14,16 +15,14 @@ const authLink = setContext(async (req, { headers }) => {
   if (req.operationName === 'RefreshToken') return;
 
   if (userProvider.isTokenExpired(currToken)) {
-    try {
-      let { success, token } = await userProvider.refreshToken()
+    let { success, token, errors } = await userProvider.refreshToken()
 
-      if (success) {
-        localStorage.setItem('access', token);
-        currToken = token;
-      }
-    } catch (error) {
-      userProvider.signOut();
+    if (success) {
+      localStorage.setItem('access', token);
+      currToken = token;
     }
+    
+    if (errors) userProvider.signOut();
   }
 
   return {

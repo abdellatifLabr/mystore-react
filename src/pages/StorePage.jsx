@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Card, Media, ListGroup } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Row, Col, Card, Media, ListGroup, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch, faPen } from '@fortawesome/free-solid-svg-icons';
 
 import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
@@ -64,6 +65,16 @@ class StorePage extends Component {
                               {
                                 this.props.user && this.props.user.id != store.user.id &&
                                 <SubscribeButton store={store} />
+                              }
+                            </div>
+                            <div>
+                              {
+                                this.props.user && this.props.user.id === store.user.id &&
+                                <Link to={`/store/${store.id}/edit`}>
+                                  <Button variant="outline-secondary">
+                                    <FontAwesomeIcon icon={faPen}></FontAwesomeIcon> Edit
+                                  </Button>
+                                </Link>
                               }
                             </div>
                           </div>

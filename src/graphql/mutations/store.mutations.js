@@ -27,3 +27,36 @@ export const UNSUBSCRIBE = gql`
     }
   }
 `;
+
+export const UPDATE_STORE = gql`
+  mutation UpdateStore(
+    $id: ID!,
+    $name: String,
+    $description: String,
+    $closed: Boolean,
+    $shipping: Decimal,
+    $logo: Upload,
+    $cover: Upload,
+    $workers: [ID] 
+  ) {
+    updateStore(
+      input: {
+        id: $id,
+        name: $name,
+        description: $description,
+        closed: $closed,
+        shipping: $shipping,
+        logo: $logo,
+        cover: $cover,
+        workers: $workers
+      }
+    ) {
+      success
+      errors
+      store {
+        pk
+        id
+      }
+    }
+  }
+`;

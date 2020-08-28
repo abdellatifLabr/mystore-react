@@ -9,6 +9,8 @@ export const STORES = gql`
           pk
           name
           description
+          closed
+          shipping
           cover {
             original
           }
@@ -25,6 +27,33 @@ export const STORES = gql`
   }
 `;
 
+export const MY_STORES = gql`
+  query MyStores {
+    myStores {
+      edges {
+        node {
+          pk
+          id
+          name
+          description
+          closed
+          shipping
+          cover {
+            original
+          }
+          logo {
+            original
+          }
+          user {
+            pk
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const STORE = gql`
   query Store($id: ID!) {
     store(id: $id) {
@@ -32,11 +61,17 @@ export const STORE = gql`
       id
       name
       description
+      closed
+      shipping
       logo {
         original
+        width
+        height
       }
       cover {
         original
+        width
+        height
       }
       closed
       products {
