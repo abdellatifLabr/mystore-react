@@ -21,15 +21,6 @@ class CartsProvider {
     return res.data.deleteCartProduct;
   }
 
-  async getCartProducts(userId) {
-    let res = await apollo.query({
-      query: queries.CART_PRODUCTS,
-      variables: { userId }
-    });
-
-    return res.data.cartProducts.edges.map(edge => edge.node);
-  }
-
   async updateCartProduct(cartProductId, fields) {
     let res = await apollo.mutate({
       mutation: mutations.UPDATE_CART_PRODUCT,
@@ -39,20 +30,12 @@ class CartsProvider {
     return res.data.updateCartProduct;
   }
 
-  async deleteAllCartProducts() {
-    let res = await apollo.mutate({
-      mutation: mutations.DELETE_ALL_CART_PRODUCTS
-    });
-
-    return res.data.deleteAllCartProducts;
-  }
-
   async getCarts() {
     let res = await apollo.query({
       query: queries.CARTS
     });
 
-    return res.data.carts.edges.map(edge => edge.node);
+    return res.data.carts;
   }
 
   async getCart(id) {

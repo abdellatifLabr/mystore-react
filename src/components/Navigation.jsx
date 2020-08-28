@@ -44,7 +44,7 @@ class Navigation extends Component {
           <ListGroup variant="flush">
             {
               this.props.carts.length > 0 ? (
-                this.props.carts.map(cart => (
+                this.props.carts.edges.map(edge => edge.node).map(cart => (
                   <Link to={`/cart/${cart.id}`} key={cart.id}>
                     <ListGroup.Item action className="d-flex justify-content-between align-items-center">
                       <div>
