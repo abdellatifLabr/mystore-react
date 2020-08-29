@@ -124,13 +124,19 @@ class ImageFilePreview extends Component {
     return (
       <Card>
         <Card.Header className="p-2">{this.props.label}</Card.Header>
-        <ReactCrop 
-          {...props} 
-          src={this.state.content || file} 
-          crop={this.state.crop}
-          onChange={this.handleChange}
-          onImageLoaded={this.handleImageLoaded}
-        />
+        {
+          (this.props.file || this.state.content)
+          ? (
+            <ReactCrop 
+              {...props} 
+              src={this.state.content || file} 
+              crop={this.state.crop}
+              onChange={this.handleChange}
+              onImageLoaded={this.handleImageLoaded}
+            />
+          )
+          : <Card.Body className="text-secondary text-center">No image selected</Card.Body>
+        }
         <Card.Footer className="d-flex align-items-center p-2">
           <div className="mr-2">
             <Button variant="secondary" onClick={e => this.hiddenFileInput.current.click()}>
