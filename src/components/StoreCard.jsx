@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import SubscribeButton from '../components/SubscribeButton';
+import StoreUserOptions from '../components/StoreUserOptions';
 
 class StoreCard extends Component {
   render() {
@@ -12,7 +13,7 @@ class StoreCard extends Component {
     return (
       <Card>
         <Card.Img variant="top" src={store.cover.original} />
-        <Card.Body>
+        <Card.Body className="p-2">
           <Media className="d-flex align-items-center">
             <Image
               width={32}
@@ -27,12 +28,18 @@ class StoreCard extends Component {
               <div className="flex-grow-1">
                 <Link to={`/store/${store.id}`}>{store.name}</Link> 
               </div>
-              <div>
-                {
-                  this.props.user && this.props.user.id != store.user.id &&
-                  <SubscribeButton store={store} size="sm" />
-                }
-              </div>
+              {
+                this.props.user && this.props.user.id === store.user.id
+                ? (
+                  <div>
+                    <StoreUserOptions store={store} />
+                  </div>
+                ) : (
+                  <div>
+                    <SubscribeButton store={store} />
+                  </div>
+                )
+              }
             </Media.Body>
           </Media>
         </Card.Body>
