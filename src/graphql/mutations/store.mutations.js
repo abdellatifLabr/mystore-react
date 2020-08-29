@@ -60,3 +60,32 @@ export const UPDATE_STORE = gql`
     }
   }
 `;
+
+export const CREATE_STORE = gql`
+  mutation CreateStore(
+    $name: String!,
+    $description: String!,
+    $logo: Upload,
+    $cover: Upload,
+    $closed: Boolean,
+    $shipping: Decimal!
+  ) {
+    createStore(
+      input: {
+        name: $name,
+        description: $description,
+        logo: $logo,
+        cover: $cover,
+        closed: $closed,
+        shipping: $shipping
+      }
+    ) {
+      success
+      errors
+      store {
+        pk
+        id
+      }
+    }
+  }
+`;

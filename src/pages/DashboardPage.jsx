@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Tab, Nav, Row, Col, Card } from 'react-bootstrap';
+import { Tab, Nav, Row, Col, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import storeProvider from '../providers/store.provider';
 import StoreCard from '../components/StoreCard';
@@ -47,6 +50,16 @@ class DashboardPage extends Component {
                             <StoreCard store={store} />
                           </Col>
                         ))}
+                        <Col md={3}>
+                          <Link to="/store/create">
+                            <Button block className="h-100 bg-white border border-1">
+                              <h2 className="icon text-secondary">
+                                <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
+                              </h2>
+                              <div className="text text-secondary font-weight-bold">New Store</div>
+                            </Button>
+                          </Link>
+                        </Col>
                       </Row>
                     }
                   </Tab.Pane>

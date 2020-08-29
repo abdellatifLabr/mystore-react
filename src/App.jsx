@@ -10,6 +10,7 @@ import SignInPage from './pages/SignInPage';
 import UserVerificationAlert from './components/UserVerificationAlert';
 import ActivationPage from './pages/ActivationPage';
 import StorePage from './pages/StorePage';
+import CreateStorePage from './pages/CreateStorePage';
 import EditStorePage from './pages/EditStorePage';
 import CartPage from './pages/CartPage';
 import OrderPage from './pages/OrderPage';
@@ -27,6 +28,7 @@ class App extends Component {
             <Route path="/signup" component={SignUpPage} exact />
             <Route path="/signin" component={SignInPage} exact />
             <Route path="/activate/:token" component={ActivationPage} exact />
+            <Route path="/store/create" component={CreateStorePage} exact />
             <Route path="/store/:id" component={StorePage} exact />
             <Route path="/store/:id/edit" component={EditStorePage} exact />
             <Route path="/cart/:id" component={CartPage} exact />

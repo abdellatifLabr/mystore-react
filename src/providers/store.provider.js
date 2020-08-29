@@ -63,6 +63,18 @@ class StoreProvider {
 
     return res.data.updateStore;
   }
+
+  async createStore(store) {
+    let res = await apollo.mutate({
+      mutation: mutations.CREATE_STORE,
+      variables: { ...store },
+      context: {
+        useMultipart: true
+      }
+    });
+
+    return res.data.createStore;
+  }
 }
 
 export default new StoreProvider();
