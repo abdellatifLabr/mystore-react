@@ -18,9 +18,7 @@ class EditStoreForm extends Component {
       description: '',
       closed: false,
       shipping: ''
-    },
-    logo: null,
-    cover: null
+    }
   };
 
   constructor(props) {
@@ -122,6 +120,7 @@ class EditStoreForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <Card>
+          <Card.Header className="text-center font-weight-bold">Update Store</Card.Header>
           <Card.Body>
             <Form.Group>
               <ImageFilePreview 
