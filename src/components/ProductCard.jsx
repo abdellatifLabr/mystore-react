@@ -44,7 +44,7 @@ class ProductCard extends Component {
             )
           }
         </Card.Header>
-        <Card.Img variant="top" src={product.pictures[0].original} />
+        <Card.Img variant="top" src={product.pictures.edges[0].node.original} />
         <Card.Body className="d-flex justify-content-between align-items-center p-2">
           <div>
             <strong>

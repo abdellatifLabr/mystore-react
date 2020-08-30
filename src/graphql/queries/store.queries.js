@@ -82,7 +82,11 @@ export const STORE = gql`
             name
             unitsLeft
             pictures {
-              original
+              edges {
+                node {
+                  original
+                }
+              }
             }
             price
             store {
