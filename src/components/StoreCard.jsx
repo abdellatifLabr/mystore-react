@@ -29,15 +29,18 @@ class StoreCard extends Component {
                 <Link to={`/store/${store.id}`}>{store.name}</Link> 
               </div>
               {
-                this.props.user && this.props.user.id === store.user.id
-                ? (
-                  <div>
-                    <StoreUserOptions store={store} />
-                  </div>
-                ) : (
-                  <div>
-                    <SubscribeButton store={store} />
-                  </div>
+                this.props.user && 
+                (
+                  this.props.user.id === store.user.id
+                  ? (
+                    <div>
+                      <StoreUserOptions store={store} />
+                    </div>
+                  ) : (
+                    <div>
+                      <SubscribeButton store={store} size="sm" />
+                    </div>
+                  )
                 )
               }
             </Media.Body>

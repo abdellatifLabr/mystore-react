@@ -94,6 +94,10 @@ export const STORE = gql`
               logo {
                 original
               }
+              user {
+                pk
+                id
+              }
             }
           }
         }
