@@ -51,7 +51,9 @@ class SignInForm extends Component {
       this.props.setUser(user);
 
       let carts = await cartsProvider.getCarts();
-      this.props.setCarts(carts);
+      if (carts) {
+        this.props.setCarts(carts.edges.map(edge => edge.node));
+      }
 
       this.props.history.push('/')
     }
