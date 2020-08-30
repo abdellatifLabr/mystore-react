@@ -164,7 +164,7 @@ class CartPage extends Component {
                     <div>
                       <h4>{cartProduct.product.name}</h4>
                       <p className="text-secondary">{cartProduct.product.description}</p>
-                      <span className="font-weight-bold">{cartProduct.product.price.value}</span>
+                      <span className="font-weight-bold">{cartProduct.product.price}</span>
                     </div>
                   </div>
                   <div>

@@ -79,9 +79,7 @@ export const DELETE_CART_PRODUCT = gql`
                 id
                 name
                 description
-                price {
-                  value
-                }
+                price
                 pictures {
                   original
                 }
@@ -139,9 +137,7 @@ export const UPDATE_CART_PRODUCT = gql`
                 id
                 name
                 description
-                price {
-                  value
-                }
+                price
                 pictures {
                   original
                 }

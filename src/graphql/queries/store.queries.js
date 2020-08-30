@@ -84,9 +84,7 @@ export const STORE = gql`
             pictures {
               original
             }
-            price {
-              value
-            }
+            price
             store {
               pk
               id

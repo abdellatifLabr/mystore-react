@@ -81,9 +81,7 @@ export const CART = gql`
               id
               name
               description
-              price {
-                value
-              }
+              price
               pictures {
                 original
               }
