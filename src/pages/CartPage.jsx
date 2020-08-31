@@ -158,7 +158,7 @@ class CartPage extends Component {
                     </Button>
                   </div>
                   <div className="w-25">
-                    <Image src={cartProduct.product.pictures[0].original} fluid></Image>
+                    <Image src={cartProduct.product.pictures.edges[0].node.original} fluid></Image>
                   </div>
                   <div className="ml-2 py-2 flex-grow-1 d-flex flex-column justify-content-between">
                     <div>

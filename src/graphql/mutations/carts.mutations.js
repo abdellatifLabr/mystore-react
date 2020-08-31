@@ -81,7 +81,11 @@ export const DELETE_CART_PRODUCT = gql`
                 description
                 price
                 pictures {
-                  original
+                  edges {
+                    node {
+                      original
+                    }
+                  }
                 }
                 store {
                   id
@@ -139,7 +143,11 @@ export const UPDATE_CART_PRODUCT = gql`
                 description
                 price
                 pictures {
-                  original
+                  edges {
+                    node {
+                      original
+                    }
+                  }
                 }
                 store {
                   id

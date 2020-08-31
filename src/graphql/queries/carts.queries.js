@@ -83,7 +83,11 @@ export const CART = gql`
               description
               price
               pictures {
-                original
+                edges {
+                  node {
+                    original
+                  }
+                }
               }
             }
           }
