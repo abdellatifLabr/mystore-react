@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Row, Col, Card, Media, ListGroup, Dropdown } from 'react-bootstrap';
+import { Row, Col, Card, Media, ListGroup, Button, Tab, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
@@ -99,14 +99,50 @@ class StorePage extends Component {
               </ListGroup>
             </Card>
           </Col> 
-          <Col className="mt-4">
-            <Row>               
-              {products.map(product => (
-                <Col md={3} key={product.id}>
-                  <ProductCard product={product} />
+          <Col className="mt-4" md={12}>
+            <Tab.Container id="store-tabs" defaultActiveKey="products">
+              <Row>
+                <Col md={3}>
+                  <Nav variant="pills" className="flex-column">
+                    <Nav.Item>
+                      <Nav.Link eventKey="products">Products</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="workers">Workers</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="subscribers">Subscribers</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="about">About</Nav.Link>
+                    </Nav.Item>
+                  </Nav>
                 </Col>
-              ))}         
-            </Row>
+                <Col md={9}>
+                  <Tab.Content>
+                    <Tab.Pane eventKey="products">
+                      <Row>
+                        <Col md={12} className="mb-4 text-right">
+                          <Link to="/product/create">
+                            <Button variant="success">
+                              <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> New Product
+                            </Button>
+                          </Link>
+                        </Col>               
+                        {products.map(product => (
+                          <Col md={4} className="mb-4" key={product.id}>
+                            <ProductCard product={product} />
+                          </Col>
+                        ))}         
+                      </Row>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="workers">workers</Tab.Pane>
+                    <Tab.Pane eventKey="subscribers">subscribers</Tab.Pane>
+                    <Tab.Pane eventKey="about">about</Tab.Pane>
+                  </Tab.Content>
+                </Col>
+              </Row>
+            </Tab.Container>
           </Col>
         </Row>
       </div>
