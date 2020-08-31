@@ -123,7 +123,10 @@ class ImageFilePreview extends Component {
 
     return (
       <Card>
-        <Card.Header className="p-2">{this.props.label}</Card.Header>
+        {
+          this.props.label &&
+          <Card.Header className="p-2">{this.props.label}</Card.Header>
+        }
         {
           (this.props.file || this.state.content)
           ? (
@@ -154,7 +157,10 @@ class ImageFilePreview extends Component {
               <FontAwesomeIcon icon={faCropAlt}></FontAwesomeIcon> Crop
             </Button>
           </div>
-          <div className="text-secondary">
+          <div>
+            {this.props.extra}
+          </div>
+          <div className="text-secondary ml-2">
             {
               this.state.loading ? (
                 <FontAwesomeIcon icon={faCircleNotch}></FontAwesomeIcon>
