@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Row, Col, Card, Media, ListGroup, Button, Tab, Nav } from 'react-bootstrap';
+import { Row, Col, Card, Media, ListGroup, Button, Tab, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,12 +9,33 @@ import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
 import ProductCard from '../components/ProductCard';
 import StoreUserOptions from '../components/StoreUserOptions';
+import CreateProductForm from '../components/CreateProductForm';
 
 class StorePage extends Component {
   state = {
     loading: false,
-    store: null
+    store: null,
+    showCreateProductModal: false
   };
+
+  constructor(props) {
+    super(props);
+
+    this.handleCreateProductModalClose = this.handleCreateProductModalClose.bind(this);
+    this.handleCreateProductModalOpen = this.handleCreateProductModalOpen.bind(this);
+  }
+
+  handleCreateProductModalOpen() {
+    this.setState({
+      showCreateProductModal: true
+    });
+  }
+
+  handleCreateProductModalClose() {
+    this.setState({
+      showCreateProductModal: false
+    });
+  }
 
   componentDidMount() {
     let storeId = this.props.match.params.id;
@@ -38,6 +59,7 @@ class StorePage extends Component {
 
     let store = this.state.store;
     let products = store.products.edges.map(edge => edge.node);
+    let visitorIsOwner = this.props.user && this.props.user.id === store.user.id;
 
     return (
       <div>
@@ -63,7 +85,7 @@ class StorePage extends Component {
                               <h4 className="m-0">{store.name}</h4>
                             </div>
                             {
-                              this.props.user && this.props.user.id === store.user.id
+                              visitorIsOwner
                               ? (
                                 <div>
                                   <StoreUserOptions store={this.state.store} />
@@ -103,31 +125,37 @@ class StorePage extends Component {
             <Tab.Container id="store-tabs" defaultActiveKey="products">
               <Row>
                 <Col md={3}>
-                  <Nav variant="pills" className="flex-column">
-                    <Nav.Item>
-                      <Nav.Link eventKey="products">Products</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey="workers">Workers</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey="subscribers">Subscribers</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey="about">About</Nav.Link>
-                    </Nav.Item>
-                  </Nav>
+                  <ListGroup>
+                    <ListGroup.Item action eventKey="products">
+                      Products
+                    </ListGroup.Item>
+                    {
+                      visitorIsOwner &&
+                      <>
+                        <ListGroup.Item action eventKey="workers">
+                          Workers
+                        </ListGroup.Item>
+                        <ListGroup.Item action eventKey="subscribers">
+                          Subscribers
+                        </ListGroup.Item>
+                      </>
+                    }
+                    <ListGroup.Item action eventKey="about">
+                      About
+                    </ListGroup.Item>
+                  </ListGroup>
                 </Col>
                 <Col md={9}>
                   <Tab.Content>
                     <Tab.Pane eventKey="products">
                       <Row>
-                        <Col md={12} className="mb-4 text-right">
-                          <Link to="/product/create">
-                            <Button variant="success">
+                        <Col md={12} className="mb-4">
+                          {
+                            visitorIsOwner &&
+                            <Button variant="success" onClick={this.handleCreateProductModalOpen}>
                               <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> New Product
                             </Button>
-                          </Link>
+                          }
                         </Col>               
                         {products.map(product => (
                           <Col md={4} className="mb-4" key={product.id}>
@@ -145,6 +173,14 @@ class StorePage extends Component {
             </Tab.Container>
           </Col>
         </Row>
+        <Modal size="xl" show={this.state.showCreateProductModal} onHide={this.handleCreateProductModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Create New Product</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <CreateProductForm store={store} />
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }
