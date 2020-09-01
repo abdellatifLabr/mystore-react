@@ -29,6 +29,15 @@ class ProductProvider {
 
     return res.data.createProduct;
   }
+
+  async deleteProduct(id) {
+    let res = await apollo.mutate({
+      mutation: mutations.DELETE_PRODUCT,
+      variables: { id }
+    });
+
+    return res.data.deleteProduct;
+  }
 }
 
 export default new ProductProvider();
