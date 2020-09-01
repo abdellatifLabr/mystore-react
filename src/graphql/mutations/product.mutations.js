@@ -28,3 +28,28 @@ export const UPDATE_PRODUCT = gql`
     }
   }
 `;
+
+export const CREATE_PRODUCT = gql`
+  mutation CreateProduct(
+    $storeId: ID!,
+    $name: String!,
+    $description: String!,
+    $pictures: [Upload]!,
+    $quantity: Int!,
+    $price: Decimal!
+  ) {
+    createProduct(
+      input: {
+        storeId: $storeId,
+        name: $name,
+        description: $description,
+        pictures: $pictures,
+        price: $price,
+        quantity: $quantity
+      }
+    ) {
+      success
+      errors
+    }
+  }
+`;

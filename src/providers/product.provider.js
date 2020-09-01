@@ -20,6 +20,15 @@ class ProductProvider {
 
     return res.data.updateProduct;
   }
+
+  async createProduct(storeId, fields) {
+    let res = await apollo.mutate({
+      mutation: mutations.CREATE_PRODUCT,
+      variables: { storeId, ...fields }
+    });
+
+    return res.data.createProduct;
+  }
 }
 
 export default new ProductProvider();
