@@ -51,6 +51,15 @@ class OrderProvider {
 
     return res.data.completeCheckout;
   }
+
+  async deleteOrder(id) {
+    let res = await apollo.mutate({
+      mutation: mutations.DELETE_ORDER,
+      variables: { id }
+    });
+
+    return res.data.deleteOrder;
+  }
 }
 
 export default new OrderProvider();

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { CardElement } from '@stripe/react-stripe-js';
 import { Button } from 'react-bootstrap';
 
 import orderProvider from '../providers/order.provider';
+import dialogProvider from '../providers/core/dialog.provider';
 
 class CheckoutForm extends Component {
   CARD_OPTIONS = {
@@ -32,6 +34,7 @@ class CheckoutForm extends Component {
     super(props);
 
     this.onCompleteCheckoutClick = this.onCompleteCheckoutClick.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   onCompleteCheckoutClick() {
@@ -115,6 +118,24 @@ class CheckoutForm extends Component {
     }
   } 
 
+  handleDelete() {
+    dialogProvider.open({
+      title: 'Delete Order',
+      message: 'Are you sure you want to delete this order?',
+      onCancel: () => {},
+      onConfirm: () => {
+        orderProvider.deleteOrder(this.props.order.pk)
+          .then(data => {
+            let { success, errors } = data;
+
+            if (success) this.props.history.push('/');
+
+            if (errors) this.setState({ errors });
+          });
+      }
+    });
+  }
+
   render() {
     return (
       <div>
@@ -135,7 +156,7 @@ class CheckoutForm extends Component {
               : 'Complete Checkout'
             }
           </Button>
-          <Button variant="outline-danger" className="ml-2">Cancel & Delete</Button>
+          <Button variant="outline-danger" className="ml-2" onClick={this.handleDelete}>Cancel & Delete</Button>
         </div>
       </div>
     );
@@ -146,4 +167,4 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, {})(CheckoutForm);
+export default connect(mapStateToProps, {})(withRouter(CheckoutForm));

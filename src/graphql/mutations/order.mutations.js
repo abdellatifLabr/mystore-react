@@ -98,9 +98,7 @@ export const UPDATE_ORDER = gql`
               cost
               product {
                 name
-                price {
-                  value
-                }
+                price
                 store {
                   pk
                   id
@@ -124,6 +122,19 @@ export const COMPLETE_CHECKOUT = gql`
       success
       errors
       clientSecret
+    }
+  }
+`;
+
+export const DELETE_ORDER = gql`
+  mutation DeleteOrder($id: ID!) {
+    deleteOrder(
+      input: {
+        id: $id
+      }
+    ) {
+      success
+      errors
     }
   }
 `;
