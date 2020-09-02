@@ -97,6 +97,12 @@ class OrderPage extends Component {
     this.setState({ order });
   }
 
+  formatDateTime(dateTime) {
+    let date = new Date(this.state.order.updated).toDateString();
+    let time = new Date(this.state.order.updated).toLocaleTimeString();
+    return `${date} at ${time}`;
+  }
+
   render() {
     if (!this.state.order) {
       return (
@@ -176,9 +182,7 @@ class OrderPage extends Component {
               <Card.Footer>
                 <small className="text-success">
                   <FontAwesomeIcon icon={faCheckCircle}></FontAwesomeIcon>&nbsp;
-                  Order completed on&nbsp;
-                  {new Date(this.state.order.updated).toDateString()} at&nbsp;
-                  {new Date(this.state.order.updated).toLocaleTimeString()}
+                  Order completed on {this.formatDateTime(this.state.order.updated)}
                 </small>
               </Card.Footer>
             }
