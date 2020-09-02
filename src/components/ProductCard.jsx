@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 import CartButton from '../components/CartButton';
 import productProvider from '../providers/product.provider';
+import dialogProvider from '../providers/core/dialog.provider';
 
 class ProductCard extends Component {
 
@@ -18,10 +19,17 @@ class ProductCard extends Component {
 
   handleDelete() {
     let productId = this.props.product.pk;
-    productProvider.deleteProduct(productId)
-      .then(data => {
-        if (data.success) this.props.onDelete();
-      });
+    dialogProvider.open({
+      title: 'Delete Product',
+      message: 'Are you sure you want to delete this product?',
+      onCancel: () => {},
+      onConfirm: () => {
+        productProvider.deleteProduct(productId)
+          .then(data => {
+            if (data.success) this.props.onDelete();
+          });
+      }
+    });
   }
 
   render() {
