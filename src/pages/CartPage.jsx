@@ -162,7 +162,9 @@ class CartPage extends Component {
                   </div>
                   <div className="ml-2 py-2 flex-grow-1 d-flex flex-column justify-content-between">
                     <div>
-                      <h4>{cartProduct.product.name}</h4>
+                      <Link to={`/product/${cartProduct.product.id}`}>
+                        <h4>{cartProduct.product.name}</h4>
+                      </Link>
                       <p className="text-secondary">{cartProduct.product.description}</p>
                       <span className="font-weight-bold">{cartProduct.product.price}</span>
                     </div>

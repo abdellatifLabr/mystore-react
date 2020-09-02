@@ -78,8 +78,9 @@ class CartButton extends Component {
 
   render() {
     let inCart = !!(this.state.cartProduct);
+    let { product, size, user, ...props } = this.props;
 
-    if (this.props.product.unitsLeft === 0) {
+    if (product.unitsLeft === 0) {
       return <strong className="text-warning">SOLD OUT</strong>
     }
 
@@ -87,8 +88,8 @@ class CartButton extends Component {
       <Button
         variant={inCart ? 'outline-danger' : 'outline-secondary'}
         disabled={this.state.loading}
-        size={this.props.size}
-        onClick={this.props.user ? (inCart ? this.onRemoveFromCartClick : this.onAddToCartClick) : this.gotoSignIn}
+        onClick={user ? (inCart ? this.onRemoveFromCartClick : this.onAddToCartClick) : this.gotoSignIn}
+        {...props}
       >
         { 
           this.state.loading 

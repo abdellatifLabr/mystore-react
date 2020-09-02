@@ -7,18 +7,25 @@ export const PRODUCT = gql`
       id
       name
       description
-      quantity
       unitsLeft
-      price
       pictures {
         edges {
           node {
-            pk
-            id
             original
-            width
-            height
           }
+        }
+      }
+      price
+      store {
+        pk
+        id
+        name
+        logo {
+          original
+        }
+        user {
+          pk
+          id
         }
       }
     }

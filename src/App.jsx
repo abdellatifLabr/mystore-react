@@ -16,6 +16,7 @@ import CartPage from './pages/CartPage';
 import OrderPage from './pages/OrderPage';
 import DashboardPage from './pages/DashboardPage';
 import EditProductPage from './pages/EditProductPage';
+import ProductPage from './pages/ProductPage';
 
 class App extends Component {
   render() {
@@ -32,6 +33,7 @@ class App extends Component {
             <Route path="/store/create" component={CreateStorePage} exact />
             <Route path="/store/:id" component={StorePage} exact />
             <Route path="/store/:id/edit" component={EditStorePage} exact />
+            <Route path="/product/:id" component={ProductPage} exact />
             <Route path="/product/:id/edit" component={EditProductPage} exact />
             <Route path="/cart/:id" component={CartPage} exact />
             <Route path="/order/:id" component={OrderPage} exact />
