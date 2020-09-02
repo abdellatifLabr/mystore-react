@@ -50,6 +50,32 @@ export const CREATE_PRODUCT = gql`
     ) {
       success
       errors
+      product {
+        pk
+        id
+        name
+        unitsLeft
+        pictures {
+          edges {
+            node {
+              original
+            }
+          }
+        }
+        price
+        store {
+          pk
+          id
+          name
+          logo {
+            original
+          }
+          user {
+            pk
+            id
+          }
+        }
+      }
     }
   }
 `;

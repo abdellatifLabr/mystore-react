@@ -1,40 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Row, Col, Card, Media, ListGroup, Button, Tab, Modal } from 'react-bootstrap';
+import { Row, Col, Card, Media, ListGroup, Tab } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
-import ProductCard from '../components/ProductCard';
 import StoreUserOptions from '../components/StoreUserOptions';
-import CreateProductForm from '../components/CreateProductForm';
+import ProductsList from '../components/ProductsList';
 
 class StorePage extends Component {
   state = {
     loading: false,
-    store: null,
-    showCreateProductModal: false
+    store: null
   };
 
   constructor(props) {
     super(props);
-
-    this.handleCreateProductModalClose = this.handleCreateProductModalClose.bind(this);
-    this.handleCreateProductModalOpen = this.handleCreateProductModalOpen.bind(this);
-  }
-
-  handleCreateProductModalOpen() {
-    this.setState({
-      showCreateProductModal: true
-    });
-  }
-
-  handleCreateProductModalClose() {
-    this.setState({
-      showCreateProductModal: false
-    });
   }
 
   componentDidMount() {
@@ -58,7 +40,6 @@ class StorePage extends Component {
     }
 
     let store = this.state.store;
-    let products = store.products.edges.map(edge => edge.node);
     let visitorIsOwner = this.props.user && this.props.user.id === store.user.id;
 
     return (
@@ -148,21 +129,7 @@ class StorePage extends Component {
                 <Col md={9}>
                   <Tab.Content>
                     <Tab.Pane eventKey="products">
-                      <Row>
-                        <Col md={12} className="mb-4">
-                          {
-                            visitorIsOwner &&
-                            <Button variant="success" onClick={this.handleCreateProductModalOpen}>
-                              <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> New Product
-                            </Button>
-                          }
-                        </Col>               
-                        {products.map(product => (
-                          <Col md={4} className="mb-4" key={product.id}>
-                            <ProductCard product={product} />
-                          </Col>
-                        ))}         
-                      </Row>
+                      <ProductsList store={store} />
                     </Tab.Pane>
                     <Tab.Pane eventKey="workers">workers</Tab.Pane>
                     <Tab.Pane eventKey="subscribers">subscribers</Tab.Pane>
@@ -173,14 +140,6 @@ class StorePage extends Component {
             </Tab.Container>
           </Col>
         </Row>
-        <Modal size="xl" show={this.state.showCreateProductModal} onHide={this.handleCreateProductModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Create New Product</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <CreateProductForm store={store} />
-          </Modal.Body>
-        </Modal>
       </div>
     );
   }

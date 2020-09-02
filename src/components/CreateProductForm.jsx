@@ -115,9 +115,12 @@ class CreateProductForm extends Component {
       .then(data => {
         this.setState({ loading: false });
 
-        let { success, errors } = data;
+        let { success, errors, product } = data;
 
-        if (success) this.setState({ success: true });
+        if (success) {
+          this.setState({ success: true });
+          this.props.onCreateProduct(product);
+        }
 
         if (errors) this.setState({ errors });
       });

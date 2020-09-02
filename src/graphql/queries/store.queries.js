@@ -74,36 +74,6 @@ export const STORE = gql`
         height
       }
       closed
-      products {
-        edges {
-          node {
-            pk
-            id
-            name
-            unitsLeft
-            pictures {
-              edges {
-                node {
-                  original
-                }
-              }
-            }
-            price
-            store {
-              pk
-              id
-              name
-              logo {
-                original
-              }
-              user {
-                pk
-                id
-              }
-            }
-          }
-        }
-      }
       user {
         pk
         id

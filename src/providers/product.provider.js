@@ -12,6 +12,15 @@ class ProductProvider {
     return res.data.product;
   }
 
+  async getProducts(storeId) {
+    let res = await apollo.query({
+      query: queries.PRODUCTS,
+      variables: { storeId }
+    });
+
+    return res.data.products;
+  }
+
   async updateProduct(id, fields) {
     let res = await apollo.mutate({
       mutation: mutations.UPDATE_PRODUCT,
