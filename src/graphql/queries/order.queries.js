@@ -28,6 +28,7 @@ export const ORDER = gql`
       store {
         pk
         id
+        shipping
       }
       billingAddress {
         pk

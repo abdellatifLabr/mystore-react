@@ -30,7 +30,7 @@ class OrderSummary extends Component {
           ))}
           <ListGroup.Item className="d-flex justify-content-between text-danger font-weight-bold">
             <div>Shipping</div>
-            <div>+10 USD</div>
+            <div>{this.props.order.store.shipping}</div>
           </ListGroup.Item>
           <ListGroup.Item className="d-flex justify-content-between font-weight-bold">
             <div>Total</div>
