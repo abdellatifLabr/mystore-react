@@ -1,14 +1,32 @@
 import React, { Component } from 'react';
-import { Card, Media, Image } from 'react-bootstrap';
+import { Card, Media, Image, Dropdown } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CartButton from '../components/CartButton';
-import ProductUserOptions from '../components/ProductUserOptions';
+import productProvider from '../providers/product.provider';
 
 class ProductCard extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  handleDelete() {
+    let productId = this.props.product.pk;
+    productProvider.deleteProduct(productId)
+      .then(data => {
+        if (data.success) this.props.onDelete();
+      });
+  }
+
   render() {
     let product = this.props.product;
+    let visitorIsOwner = this.props.user && this.props.user.id === product.store.user.id;
 
     return (
       <Card>
@@ -34,14 +52,20 @@ class ProductCard extends Component {
             </Media>
           </div>
           {
-            this.props.user && this.props.user.id === product.store.user.id
-            ? (
-              <div>
-                <ProductUserOptions product={product} />
-              </div>
-            ) : (
-              <div></div>
-            )
+            visitorIsOwner &&
+            <div>
+              <Dropdown alignRight>
+                <Dropdown.Toggle variant="link" id="dropdown-basic" className="text-secondary" size="sm">
+                  <FontAwesomeIcon icon={faEllipsisV}></FontAwesomeIcon>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Link to={`/product/${this.props.product.id}/edit`}> 
+                    <Dropdown.Item as="div">Edit</Dropdown.Item>
+                  </Link>
+                  <Dropdown.Item className="text-danger" onClick={this.handleDelete}>Remove</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           }
         </Card.Header>
         <Card.Img variant="top" src={product.pictures.edges[0].node.original} />

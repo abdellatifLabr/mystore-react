@@ -21,6 +21,7 @@ class ProductsList extends Component {
     this.handleCreateProductModalClose = this.handleCreateProductModalClose.bind(this);
     this.handleCreateProductModalOpen = this.handleCreateProductModalOpen.bind(this);
     this.handleNewProduct = this.handleNewProduct.bind(this);
+    this.handleDeletedProduct = this.handleDeletedProduct.bind(this);
   }
 
   handleCreateProductModalOpen() {
@@ -40,6 +41,15 @@ class ProductsList extends Component {
       products: [
         ...state.products,
         newProduct
+      ]
+    }));
+  }
+
+  handleDeletedProduct(index) {
+    this.setState(state => ({
+      products: [
+        ...state.products.slice(0, index),
+        ...state.products.slice(index + 1)
       ]
     }));
   }
@@ -79,9 +89,9 @@ class ProductsList extends Component {
               </Button>
             }
           </Col>
-          {this.state.products.map(product => (
-            <Col md={4} className="mb-4" key={product.id}>
-              <ProductCard product={product} />
+          {this.state.products.map((product, index) => (
+            <Col md={4} className="mb-4" key={index}>
+              <ProductCard product={product} onDelete={() => this.handleDeletedProduct(index)} />
             </Col>
           ))}
         </Row>
