@@ -15,7 +15,8 @@ class AddressForm extends Component {
       city: '',
       street: '',
       postalCode: ''
-    }
+    },
+    useAlreadyCreatedAddress: false
   };
 
   constructor(props) { 
@@ -23,6 +24,8 @@ class AddressForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.onAddressFormSubmit = this.onAddressFormSubmit.bind(this);
+    this.useAlreadyCreatedAddressChange = this.useAlreadyCreatedAddressChange.bind(this);
+    this.handleExisitngAddressChange = this.handleExisitngAddressChange.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +68,17 @@ class AddressForm extends Component {
     if (data.success) this.props.onAddressResolved(data.address);
 
     if (data.errors) this.setState({ errors: data.errors });
+  }
+
+  useAlreadyCreatedAddressChange(e) {
+    this.setState({ useAlreadyCreatedAddress: e.target.checked });
+    let address = this.props.addresses.edges.map(edge => edge.node)[0];
+    this.props.onAddressResolved(address);
+  }
+
+  handleExisitngAddressChange(e) {
+    let address = this.props.addresses.edges.map(edge => edge.node)[e.target.value];
+    this.props.onAddressResolved(address);
   }
 
   handleChange(e) {
@@ -166,11 +180,37 @@ class AddressForm extends Component {
             { this.getErrorFeedbackDOM('postalCode') }
           </Form.Control.Feedback>
         </Form.Group>
+        {
+          this.props.addresses &&
+          <Form.Group>
+            <Form.Check 
+              className="mb-2" 
+              type="checkbox" 
+              checked={this.state.useAlreadyCreatedAddress}
+              onChange={this.useAlreadyCreatedAddressChange} 
+              label="Choose already created addresses"
+            />
+            <Form.Control 
+              as="select" 
+              custom
+              disabled={!this.state.useAlreadyCreatedAddress} 
+              onChange={this.handleExisitngAddressChange}
+            >
+              {this.props.addresses.edges.map(edge => edge.node).map((address, index) => (
+                <option key={index} value={index}>{address.formatted}</option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+        }
         { this.getErrorFeedbackDOM('nonFieldErrors') }
         <div className="text-right">
           {
             !this.props.readOnly &&
-            <Button variant="primary" type="submit" disabled={this.state.loading}>
+            <Button 
+              variant="primary" 
+              type="submit" 
+              disabled={this.state.loading || this.props.disabled || this.state.useAlreadyCreatedAddress}
+            >
               { 
                 this.state.loading 
                 ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> 

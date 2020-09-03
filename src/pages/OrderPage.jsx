@@ -19,6 +19,7 @@ class OrderPage extends Component {
     order: null,
     loading: false,
     errors: null,
+    addresses: null,
     billingIsShippingAddress: false
   };
 
@@ -46,6 +47,13 @@ class OrderPage extends Component {
             order,
             billingIsShippingAddress: !order.shippingAddress
           });
+        }
+      });
+    
+    addressProvider.getMyAddresses()
+      .then(addresses => {
+        if (addresses) {
+          this.setState({ addresses });
         }
       });
   }
@@ -98,8 +106,8 @@ class OrderPage extends Component {
   }
 
   formatDateTime(dateTime) {
-    let date = new Date(this.state.order.updated).toDateString();
-    let time = new Date(this.state.order.updated).toLocaleTimeString();
+    let date = new Date(dateTime).toLocaleDateString();
+    let time = new Date(dateTime).toLocaleTimeString();
     return `${date} at ${time}`;
   }
 
@@ -131,7 +139,8 @@ class OrderPage extends Component {
               <ListGroup.Item>
                 <h5 className="mb-4">Billing Address</h5>
                 <AddressForm 
-                  address={this.state.order.billingAddress} 
+                  address={this.state.order.billingAddress}
+                  addresses={this.state.addresses} 
                   onAddressResolved={this.addBillingAddress}
                   readOnly={this.state.order.done}
                 />
@@ -150,6 +159,7 @@ class OrderPage extends Component {
                   !this.state.billingIsShippingAddress &&
                   <AddressForm 
                     address={this.state.order.shippingAddress} 
+                    addresses={this.state.addresses} 
                     onAddressResolved={this.addShippingAddress}
                     disabled={this.state.billingIsShippingAddress}
                     readOnly={this.state.order.done}

@@ -1,5 +1,6 @@
 import apollo from '../graphql';
 import * as mutations from '../graphql/mutations/address.mutations';
+import * as queries from '../graphql/queries/address.queries';
 
 class AddressProvider {
   async createAddress(address) {
@@ -27,6 +28,14 @@ class AddressProvider {
     });
 
     return res.data.deleteAddress;
+  }
+
+  async getMyAddresses() {
+    let res = await apollo.query({
+      query: queries.MY_ADDRESSES
+    });
+
+    return res.data.myAddresses;
   }
 }
 
