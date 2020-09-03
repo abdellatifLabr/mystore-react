@@ -42,6 +42,10 @@ class StorePage extends Component {
     let store = this.state.store;
     let visitorIsOwner = this.props.user && this.props.user.id === store.user.id;
 
+    if (store.closed) {
+      return <h4 className="text-secondary text-center">This store is closed</h4>
+    }
+
     return (
       <div>
         <Row>
