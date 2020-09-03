@@ -11,6 +11,7 @@ import DiscountCodeChecker from '../components/DiscountCodeChecker';
 import CheckoutForm from '../components/CheckoutForm';
 import orderProvider from '../providers/order.provider';
 import addressProvider from '../providers/address.provider';
+import { formatDateTime } from '../utils';
 
 const stripePromise = loadStripe('pk_test_51HIDjLIUBv7LZRyQbGW05sT6n4VFjzafHyTzRL0LrvzLJzY3P2XBxc8QTnXwfL5zlhtbwlJpgOBvszpD3C4MgQiV00K1ebaHok');
 
@@ -105,12 +106,6 @@ class OrderPage extends Component {
     this.setState({ order });
   }
 
-  formatDateTime(dateTime) {
-    let date = new Date(dateTime).toLocaleDateString();
-    let time = new Date(dateTime).toLocaleTimeString();
-    return `${date} at ${time}`;
-  }
-
   render() {
     if (!this.state.order) {
       return (
@@ -192,7 +187,7 @@ class OrderPage extends Component {
               <Card.Footer>
                 <small className="text-success">
                   <FontAwesomeIcon icon={faCheckCircle}></FontAwesomeIcon>&nbsp;
-                  Order completed on {this.formatDateTime(this.state.order.updated)}
+                  Order completed on {formatDateTime(this.state.order.updated)}
                 </small>
               </Card.Footer>
             }
