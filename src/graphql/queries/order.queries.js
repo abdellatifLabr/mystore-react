@@ -77,3 +77,29 @@ export const ORDER = gql`
     }
   }
 `;
+
+export const ORDERS = gql`
+  query Orders($storeId: ID!) {
+    orders(store_Id: $storeId) {
+      edges {
+        node {
+          pk
+          id
+          done
+          total
+          created
+          billingAddress {
+            countryName
+            city
+          }
+          user {
+            pk
+            id
+            firstName
+            lastName
+          }
+        }
+      }
+    }
+  }
+`;

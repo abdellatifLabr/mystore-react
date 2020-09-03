@@ -8,6 +8,7 @@ import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
 import StoreUserOptions from '../components/StoreUserOptions';
 import ProductsList from '../components/ProductsList';
+import OrdersList from '../components/OrdersList';
 
 class StorePage extends Component {
   state = {
@@ -117,6 +118,9 @@ class StorePage extends Component {
                     {
                       visitorIsOwner &&
                       <>
+                        <ListGroup.Item action eventKey="orders">
+                          Orders
+                        </ListGroup.Item>
                         <ListGroup.Item action eventKey="workers">
                           Workers
                         </ListGroup.Item>
@@ -134,6 +138,9 @@ class StorePage extends Component {
                   <Tab.Content>
                     <Tab.Pane eventKey="products">
                       <ProductsList store={store} />
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="orders">
+                      <OrdersList store={store} />
                     </Tab.Pane>
                     <Tab.Pane eventKey="workers">workers</Tab.Pane>
                     <Tab.Pane eventKey="subscribers">subscribers</Tab.Pane>
