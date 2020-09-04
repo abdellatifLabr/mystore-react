@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Card, Media, ListGroup, Tab } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,8 +7,9 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
 import StoreUserOptions from '../components/StoreUserOptions';
-import ProductsList from '../components/ProductsList';
-import OrdersList from '../components/OrdersList';
+
+const ProductsList = React.lazy(() => import('../components/ProductsList'));
+const OrdersList = React.lazy(() => import('../components/OrdersList'));
 
 class StorePage extends Component {
   state = {
@@ -135,17 +136,19 @@ class StorePage extends Component {
                   </ListGroup>
                 </Col>
                 <Col md={9}>
-                  <Tab.Content>
-                    <Tab.Pane eventKey="products">
-                      <ProductsList store={store} />
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="orders">
-                      <OrdersList store={store} />
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="workers">workers</Tab.Pane>
-                    <Tab.Pane eventKey="subscribers">subscribers</Tab.Pane>
-                    <Tab.Pane eventKey="about">about</Tab.Pane>
-                  </Tab.Content>
+                  <Suspense fallback="Loading...">
+                    <Tab.Content>
+                      <Tab.Pane eventKey="products">
+                        <ProductsList store={store} />
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="orders">
+                        <OrdersList store={store} />
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="workers">workers</Tab.Pane>
+                      <Tab.Pane eventKey="subscribers">subscribers</Tab.Pane>
+                      <Tab.Pane eventKey="about">about</Tab.Pane>
+                    </Tab.Content>
+                  </Suspense>
                 </Col>
               </Row>
             </Tab.Container>
