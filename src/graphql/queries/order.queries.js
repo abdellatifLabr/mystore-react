@@ -97,6 +97,11 @@ export const ORDERS = gql`
             id
             firstName
             lastName
+            profile {
+              avatar {
+                original
+              }
+            }
           }
         }
       }

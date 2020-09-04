@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Table } from 'react-bootstrap';
+import { Row, Col, Table, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faHourglassHalf, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,9 +16,12 @@ class OrdersList extends Component {
   componentDidMount() {
     let storeId = this.props.store.id;
 
+    this.setState({ loading: true });
+
     orderProvider.getOrders(storeId)
       .then(orders => {
-        console.log(orders)
+        this.setState({ loading: false });
+
         if (orders) {
           this.setState({ orders });
         }
@@ -26,12 +29,18 @@ class OrdersList extends Component {
   }
 
   render() {
-    if (!this.state.orders) {
+    if (this.state.loading || !this.state.orders) {
       return (
         <h4 className="text-secondary text-center">
-          {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'No orders available'}
+          <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon>
         </h4>
       );
+    }
+
+    let orders = this.state.orders.edges.map(edge => edge.node);
+
+    if (orders.length === 0) {
+      return <h4 className="text-secondary text-center">No orders available</h4>
     }
 
     return (
@@ -49,9 +58,17 @@ class OrdersList extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.orders.edges.map(edge => edge.node).map((order, index) => (
+              {orders.map((order, index) => (
                 <tr key={index}>
                   <td>
+                    <Image 
+                      src={order.user.profile.avatar.original} 
+                      fluid 
+                      roundedCircle 
+                      width="25" 
+                      height="25" 
+                      className="mr-2"
+                    />
                     <Link to={`/user/${order.user.id}`}>
                       {order.user.firstName} {order.user.lastName}
                     </Link>
