@@ -10,6 +10,27 @@ export const ME = gql`
       username
       email
       verified
+      profile {
+        avatar {
+          original
+        }
+      }
+    }
+  }
+`;
+
+export const MY_PROFILE = gql`
+  query {
+    myProfile {
+      pk
+      id
+      bio
+      avatar {
+        original
+        width
+        height
+      }
+      phone
     }
   }
 `;

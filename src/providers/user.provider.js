@@ -85,6 +85,26 @@ class UserProvider {
     store.dispatch(setUser(null));
   }
 
+  async myProfile() {
+    let res = await apollo.query({
+      query: queries.MY_PROFILE
+    });
+
+    return res.data.myProfile;
+  }
+
+  async updateProfile(fields) {
+    let res = await apollo.mutate({
+      mutation: mutations.UPDATE_PROFILE,
+      variables: { ...fields },
+      context: {
+        useMultipart: true
+      }
+    });
+
+    return res.data.updateProfile;
+  }
+
 }
 
 export default new UserProvider();

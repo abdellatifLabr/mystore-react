@@ -63,3 +63,22 @@ export const VERIFY_ACCOUNT = gql`
     }
   }
 `;
+
+export const UPDATE_PROFILE = gql`
+  mutation UpdateProfile(
+    $bio: String,
+    $phone: String,
+    $avatar: Upload
+  ) {
+    updateProfile(
+      input: {
+        bio: $bio,
+        phone: $phone,
+        avatar: $avatar
+      }
+    ) {
+      success
+      errors
+    }
+  }
+`;

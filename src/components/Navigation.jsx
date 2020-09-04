@@ -106,12 +106,14 @@ class Navigation extends Component {
                       <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
                     </OverlayTrigger>
                   </Nav.Link>
-                  <NavDropdown title={this.props.user.firstName} id="user-nav-dropdown">
+                  <NavDropdown id="dropdown-basic" title={<Image src={this.props.user.profile.avatar.original} fluid roundedCircle width="22" height="22" />}>
                     <NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
                     <Link to="/dashboard">
                     <NavDropdown.Item as="div">Dashboard</NavDropdown.Item>
                     </Link>
-                    <NavDropdown.Item as="div">Settings</NavDropdown.Item>
+                    <Link to="/settings">
+                      <NavDropdown.Item as="div">Settings</NavDropdown.Item>
+                    </Link>
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={this.onSignOutClick}>Sign Out</NavDropdown.Item>
                   </NavDropdown>
