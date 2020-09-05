@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Row, Col, Table, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faHourglassHalf, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +12,10 @@ class OrdersList extends Component {
     loading: false,
     orders: null
   };
+
+  showOrderDetails(order) {
+    this.props.history.push(`/order/${order.id}`);
+  }
 
   componentDidMount() {
     let storeId = this.props.store.id;
@@ -59,7 +63,7 @@ class OrdersList extends Component {
             </thead>
             <tbody>
               {orders.map((order, index) => (
-                <tr key={index}>
+                <tr key={index} onClick={e => this.showOrderDetails(order)}>
                   <td>
                     <Image 
                       src={order.user.profile.avatar.original} 
@@ -97,4 +101,4 @@ class OrdersList extends Component {
   }
 }
 
-export default OrdersList;
+export default withRouter(OrdersList);
