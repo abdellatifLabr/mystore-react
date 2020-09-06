@@ -149,7 +149,13 @@ class StorePage extends Component {
                           </Card.Body>
                         </Card>
                       </Tab.Pane>
-                      <Tab.Pane eventKey="about">about</Tab.Pane>
+                      <Tab.Pane eventKey="about">
+                        <Card>
+                          <Card.Body>
+                            {store.description}
+                          </Card.Body>
+                        </Card>
+                      </Tab.Pane>
                     </Tab.Content>
                   </Suspense>
                 </Col>
