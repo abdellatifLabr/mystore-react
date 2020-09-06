@@ -153,7 +153,7 @@ class OrderDetails extends Component {
                       ))}
                     </Form.Control>
                   ) : (
-                    <Link to="/settings">Create new address</Link>
+                    <Link to="/settings?tab=addresses">Create new address</Link>
                   )
                 }
               </ListGroup.Item>

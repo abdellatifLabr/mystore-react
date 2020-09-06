@@ -11,11 +11,23 @@ import { formatDateTime } from '../utils';
 
 class DashboardPage extends Component {
   state = {
+    defaultActiveTab: null,
     myStores: null,
     myOrders: null
   };
 
   componentDidMount() {
+    if (this.props.location.search !== '') {
+      let params = new URLSearchParams(this.props.location.search);
+      this.setState({
+        defaultActiveTab: params.get('tab')
+      });
+    } else {
+      this.setState({
+        defaultActiveTab: 'analytics'
+      });
+    }
+
     storeProvider.myStores()
       .then(myStores => {
         this.setState({ myStores });
@@ -29,7 +41,8 @@ class DashboardPage extends Component {
 
   render() {
     return (
-      <Tab.Container id="dashboard-tabs" defaultActiveKey="stores">
+      this.state.defaultActiveTab &&
+      <Tab.Container id="dashboard-tabs" defaultActiveKey={this.state.defaultActiveTab}>
         <Row>
           <Col md={12}>
             <Nav variant="pills" className="flex-row">

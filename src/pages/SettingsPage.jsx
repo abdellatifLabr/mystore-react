@@ -5,9 +5,27 @@ const ProfileForm = React.lazy(() => import('../components/ProfileForm'));
 const AddressesControl = React.lazy(() => import('../components/AddressesControl'));
 
 class SettingsPage extends Component {
+  state = {
+    defaultActiveTab: null 
+  };
+
+  componentDidMount() {
+    if (this.props.location.search !== '') {
+      let params = new URLSearchParams(this.props.location.search);
+      this.setState({
+        defaultActiveTab: params.get('tab')
+      });
+    } else {
+      this.setState({
+        defaultActiveTab: 'profile'
+      });
+    }
+  }
+
   render() {
     return (
-      <Tab.Container id="settings-tabs" defaultActiveKey="addresses">
+      this.state.defaultActiveTab &&
+      <Tab.Container id="settings-tabs" defaultActiveKey={this.state.defaultActiveTab}>
         <Row>
           <Col md={3}>
             <ListGroup>
