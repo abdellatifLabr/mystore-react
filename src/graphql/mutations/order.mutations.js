@@ -62,6 +62,19 @@ export const UPDATE_ORDER = gql`
         store {
           pk
           id
+          name
+          shipping
+        }
+        user {
+          pk
+          id
+          firstName
+          lastName
+          profile {
+            avatar {
+              original
+            }
+          }
         }
         billingAddress {
           pk

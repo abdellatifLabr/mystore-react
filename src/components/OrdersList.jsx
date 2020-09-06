@@ -13,10 +13,6 @@ class OrdersList extends Component {
     orders: null
   };
 
-  showOrderDetails(order) {
-    this.props.history.push(`/order/${order.id}`);
-  }
-
   componentDidMount() {
     let storeId = this.props.store.id;
 
@@ -63,7 +59,7 @@ class OrdersList extends Component {
             </thead>
             <tbody>
               {orders.map((order, index) => (
-                <tr key={index} onClick={e => this.showOrderDetails(order)}>
+                <tr key={index} onClick={e => this.props.history.push(`/order/${order.id}`)}>
                   <td>
                     <Image 
                       src={order.user.profile.avatar.original} 
