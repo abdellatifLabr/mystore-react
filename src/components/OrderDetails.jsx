@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, ListGroup, Form, Alert } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Row, Col, Card, ListGroup, Form, Alert, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { loadStripe } from '@stripe/stripe-js';
 import { ElementsConsumer, Elements } from '@stripe/react-stripe-js';
 
-import AddressForm from '../components/AddressForm';
 import OrderSummary from '../components/OrderSummary';
 import DiscountCodeChecker from '../components/DiscountCodeChecker';
 import CheckoutForm from '../components/CheckoutForm';
@@ -35,6 +35,17 @@ class OrderDetails extends Component {
   }
 
   componentDidMount() { 
+    this.setState({ loading: true });
+
+    orderProvider.getOrder(this.props.orderId)
+      .then(order => {
+        this.setState({ loading: false });
+
+        if (order) {
+          this.setState({ order, billingIsShippingAddress: !order.shippingAddress });
+        }
+      });
+
     addressProvider.getMyAddresses()
       .then(addresses => {
         if (addresses) {
@@ -44,7 +55,7 @@ class OrderDetails extends Component {
   }
 
   addDiscountCode(discountCode) {
-    orderProvider.updateOrder(this.props.order.pk, { discountCodeId: discountCode.pk })
+    orderProvider.updateOrder(this.state.order.pk, { discountCodeId: discountCode.pk })
       .then(data => {
         let { order, success } = data;
 
@@ -54,8 +65,10 @@ class OrderDetails extends Component {
       });
   }
 
-  addBillingAddress(address) {
-    orderProvider.updateOrder(this.props.order.pk, { billingAddressId: address.pk })
+  addBillingAddress(e) {
+    let addressId = e.target.value;
+
+    orderProvider.updateOrder(this.state.order.pk, { billingAddressId: addressId })
       .then(data => {
         let { order, success } = data;
 
@@ -65,8 +78,10 @@ class OrderDetails extends Component {
       });
   }
 
-  addShippingAddress(address) {
-    orderProvider.updateOrder(this.props.order.pk, { shippingAddressId: address.pk })
+  addShippingAddress(e) {
+    let addressId = e.target.value;
+
+    orderProvider.updateOrder(this.state.order.pk, { shippingAddressId: addressId })
       .then(data => {
         let { order, success } = data;
 
@@ -80,8 +95,8 @@ class OrderDetails extends Component {
     this.setState({ billingIsShippingAddress: e.target.checked });
 
     if (!e.checked) {
-      if (this.props.order.shippingAddress) {
-        addressProvider.deleteAddress(this.props.order.shippingAddress.pk);
+      if (this.state.order.shippingAddress) {
+        addressProvider.deleteAddress(this.state.order.shippingAddress.pk);
       }
     }
   }
@@ -91,7 +106,15 @@ class OrderDetails extends Component {
   }
 
   render() {
-    let { order } = this.props;
+    let { order } = this.state;
+
+    if (!order) {
+      return (
+        <h4 className="text-secondary text-center">
+          {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'This order doesn\'t exist'}
+        </h4>
+      );
+    }
 
     return (
       <Row>
@@ -110,33 +133,47 @@ class OrderDetails extends Component {
             </Card.Header>
             <ListGroup variant="flush">
               <ListGroup.Item>
-                <h5 className="mb-4">Billing Address</h5>
-                <AddressForm 
-                  address={order.billingAddress}
-                  addresses={this.state.addresses} 
-                  onAddressResolved={this.addBillingAddress}
-                  readOnly={order.done}
-                />
+                {'Order issued by '}
+                <Link to={`/user/${order.user.id}`}>
+                  {order.user.firstName} {order.user.lastName}
+                </Link>
+                {' to '} 
+                <Link to={`/store/${order.store.id}`}>
+                  {order.store.name}
+                </Link>.
               </ListGroup.Item>
               <ListGroup.Item>
-                <h5 className="mb-2">Shipping Address</h5>
+                <h5 className="mb-4">Billing Address</h5>
+                {
+                  this.state.addresses && this.state.addresses.edges.map(edge => edge.node).length > 0
+                  ? (
+                    <Form.Control as="select" custom onChange={this.addBillingAddress} disabled={order.done}>
+                      {this.state.addresses.edges.map(edge => edge.node).map((address, index) => (
+                        <option key={index} value={address.pk}>{address.formatted}</option>
+                      ))}
+                    </Form.Control>
+                  ) : (
+                    <Link to="/settings">Create new address</Link>
+                  )
+                }
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <h5 className="mb-4">Shipping Address</h5>
                 <Form.Check 
-                  className="my-4" 
+                  className="mb-2" 
                   type="checkbox" 
                   checked={this.state.billingIsShippingAddress}
                   onChange={this.onShippingAddressToggleChange} 
-                  label="Shipping address is the same as my billing address" 
+                  label="My shipping address is the same as my billing address" 
                   disabled={order.done}
                 />
                 {
-                  !this.state.billingIsShippingAddress &&
-                  <AddressForm 
-                    address={order.shippingAddress} 
-                    addresses={this.state.addresses} 
-                    onAddressResolved={this.addShippingAddress}
-                    disabled={this.state.billingIsShippingAddress}
-                    readOnly={order.done}
-                  />
+                  this.state.addresses && !this.state.billingIsShippingAddress &&
+                  <Form.Control as="select" custom disabled={order.done} onChange={this.addShippingAddress}>
+                    {this.state.addresses.edges.map(edge => edge.node).map((address, index) => (
+                      <option key={index} value={address.pk}>{address.formatted}</option>
+                    ))}
+                  </Form.Control>
                 }
               </ListGroup.Item>
               {

@@ -77,8 +77,20 @@ class OrdersList extends Component {
                       {order.user.firstName} {order.user.lastName}
                     </Link>
                   </td>
-                  <td>{order.billingAddress.countryName}</td>
-                  <td>{order.billingAddress.city}</td>
+                  {
+                    order.billingAddress
+                    ? (
+                      <>
+                        <td>{order.billingAddress.countryName}</td>
+                        <td>{order.billingAddress.city}</td>
+                      </>
+                    ) : (
+                      <>
+                        <td>/</td>
+                        <td>/</td>
+                      </>
+                    )
+                  }
                   <td>{formatDateTime(order.created)}</td>
                   <td>
                     {

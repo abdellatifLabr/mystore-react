@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Card, ListGroup, Badge } from 'react-bootstrap';
 
 class OrderSummary extends Component {
@@ -13,7 +14,12 @@ class OrderSummary extends Component {
         </Card.Header>
         <ListGroup variant="flush">
           {orderItems.map(orderItem => (
-            <ListGroup.Item key={orderItem.id} className="d-flex justify-content-between">
+            <ListGroup.Item 
+              key={orderItem.id} 
+              className="d-flex justify-content-between" 
+              action 
+              onClick={() => this.props.history.push(`/product/${orderItem.product.id}`)}
+            >
               <div>
                 {orderItem.product.name} <Badge variant="primary" pill size="sm">{orderItem.quantity}</Badge>
               </div>
@@ -30,7 +36,7 @@ class OrderSummary extends Component {
           ))}
           <ListGroup.Item className="d-flex justify-content-between text-danger font-weight-bold">
             <div>Shipping</div>
-            <div>{this.props.order.store.shipping}</div>
+            <div>-{this.props.order.store.shipping}</div>
           </ListGroup.Item>
           <ListGroup.Item className="d-flex justify-content-between font-weight-bold">
             <div>Total</div>
@@ -42,4 +48,4 @@ class OrderSummary extends Component {
   }
 }
 
-export default OrderSummary;
+export default withRouter(OrderSummary);

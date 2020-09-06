@@ -29,6 +29,20 @@ export const ORDER = gql`
         pk
         id
         shipping
+        name
+        logo {
+          original
+        }
+      }
+      user {
+        firstName
+        lastName
+        email
+        profile {
+          avatar {
+            original
+          }
+        }
       }
       billingAddress {
         pk
@@ -64,12 +78,9 @@ export const ORDER = gql`
             quantity
             cost
             product {
+              pk
+              id
               name
-              price
-              store {
-                pk
-                id
-              }
             }
           }
         }
