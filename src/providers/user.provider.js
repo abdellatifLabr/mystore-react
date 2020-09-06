@@ -105,6 +105,15 @@ class UserProvider {
     return res.data.updateProfile;
   }
 
+  async getUser(id) {
+    let res = await apollo.query({
+      query: queries.USER,
+      variables: { id }
+    });
+
+    return res.data.user;
+  }
+
 }
 
 export default new UserProvider();

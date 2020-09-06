@@ -11,6 +11,8 @@ export const ME = gql`
       email
       verified
       profile {
+        phone
+        bio
         avatar {
           original
         }
@@ -31,6 +33,26 @@ export const MY_PROFILE = gql`
         height
       }
       phone
+    }
+  }
+`;
+
+export const USER = gql`
+  query User($id: ID!) {
+    user(id: $id) {
+      id
+      pk
+      firstName
+      lastName
+      email
+      verified
+      profile {
+        phone
+        bio
+        avatar {
+          original
+        }
+      }
     }
   }
 `;

@@ -18,6 +18,7 @@ import DashboardPage from './pages/DashboardPage';
 import EditProductPage from './pages/EditProductPage';
 import ProductPage from './pages/ProductPage';
 import SettingsPage from './pages/SettingsPage';
+import ProfilePage from './pages/ProfilePage';
 
 class App extends Component {
   render() {
@@ -31,6 +32,8 @@ class App extends Component {
             <Route path="/signup" component={SignUpPage} exact />
             <Route path="/signin" component={SignInPage} exact />
             <Route path="/settings" component={SettingsPage} exact />
+            <Route path="/me" component={ProfilePage} exact />
+            <Route path="/user/:id" component={ProfilePage} exact />
             <Route path="/activate/:token" component={ActivationPage} exact />
             <Route path="/store/create" component={CreateStorePage} exact />
             <Route path="/store/:id" component={StorePage} exact />

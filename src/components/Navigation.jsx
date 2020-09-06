@@ -119,7 +119,9 @@ class Navigation extends Component {
                     </OverlayTrigger>
                   </Nav.Link>
                   <NavDropdown id="dropdown-basic" title={<Image src={this.props.user.profile.avatar.original} fluid roundedCircle width="22" height="22" />}>
-                    <NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
+                    <Link to="/me">
+                    <NavDropdown.Item as="div">Profile</NavDropdown.Item>
+                    </Link>
                     <Link to="/dashboard">
                     <NavDropdown.Item as="div">Dashboard</NavDropdown.Item>
                     </Link>
