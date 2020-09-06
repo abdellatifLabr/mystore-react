@@ -70,7 +70,8 @@ class StorePage extends Component {
                         <Media.Body>
                           <div className="d-flex align-items-center">
                             <div className="flex-grow-1">
-                              <h4 className="m-0">{store.name}</h4>
+                              <h5 className="m-0">{store.name}</h5>
+                              <small className="text-secondary">{store.subscribersCount} subscribers</small>
                             </div>
                             {
                               visitorIsOwner
@@ -89,22 +90,6 @@ class StorePage extends Component {
                       </Media>
                     </div>
                   </div>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col className="text-center">
-                      <h3 className="font-weight-bold">10k</h3>
-                      <div className="text-uppercase">Visits per day</div>
-                    </Col>
-                    <Col className="text-center">
-                      <h3 className="font-weight-bold">22.5k</h3>
-                      <div className="text-uppercase">Subscribers</div>
-                    </Col>
-                    <Col className="text-center">
-                      <h3 className="font-weight-bold">10</h3>
-                      <div className="text-uppercase">Workers</div>
-                    </Col>
-                  </Row>
                 </ListGroup.Item>
               </ListGroup>
             </Card>
@@ -126,6 +111,9 @@ class StorePage extends Component {
                         <ListGroup.Item action eventKey="subscribers">
                           Subscribers
                         </ListGroup.Item>
+                        <ListGroup.Item action eventKey="discount-codes">
+                          Discount Code
+                        </ListGroup.Item>
                       </>
                     }
                     <ListGroup.Item action eventKey="about">
@@ -139,16 +127,24 @@ class StorePage extends Component {
                       <Tab.Pane eventKey="products">
                         <ProductsList store={store} />
                       </Tab.Pane>
-                      <Tab.Pane eventKey="orders">
-                        <OrdersList store={store} />
-                      </Tab.Pane>
-                      <Tab.Pane eventKey="subscribers">
-                        <Card>
-                          <Card.Body>
-                            <UsersList users={store.subscriptions.edges.map(edge => edge.node.user)} />
-                          </Card.Body>
-                        </Card>
-                      </Tab.Pane>
+                      {
+                        visitorIsOwner &&
+                        <>
+                        <Tab.Pane eventKey="orders">
+                          <OrdersList store={store} />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="subscribers">
+                          <Card>
+                            <Card.Body>
+                              <UsersList users={store.subscriptions.edges.map(edge => edge.node.user)} />
+                            </Card.Body>
+                          </Card>
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="discount-codes">
+                          codes
+                        </Tab.Pane>
+                        </>
+                      }
                       <Tab.Pane eventKey="about">
                         <Card>
                           <Card.Body>

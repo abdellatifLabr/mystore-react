@@ -63,6 +63,7 @@ export const STORE = gql`
       description
       closed
       shipping
+      subscribersCount
       logo {
         original
         width
