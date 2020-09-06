@@ -8,6 +8,10 @@ export const MY_ADDRESSES = gql`
           pk
           id
           formatted
+          countryName
+          city
+          street
+          postalCode
         }
       }
     }

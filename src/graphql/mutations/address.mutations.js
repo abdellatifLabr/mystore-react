@@ -20,7 +20,7 @@ export const CREATE_ADDRESS = gql`
       address {
         pk
         id
-        country
+        countryName
         city
         street
         postalCode
