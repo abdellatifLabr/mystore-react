@@ -44,6 +44,14 @@ class OrderProvider {
     return res.data.orders;
   }
 
+  async getMyOrders() {
+    let res = await apollo.query({
+      query: queries.MY_ORDERS
+    });
+
+    return res.data.myOrders;
+  }
+
   async updateOrder(id, fields) {
     let res = await apollo.mutate({
       mutation: mutations.UPDATE_ORDER,

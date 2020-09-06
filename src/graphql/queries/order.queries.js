@@ -119,3 +119,34 @@ export const ORDERS = gql`
     }
   }
 `;
+
+export const MY_ORDERS = gql`
+  query myOrders {
+    myOrders {
+      edges {
+        node {
+          pk
+          id
+          done
+          total
+          created
+          billingAddress {
+            countryName
+            city
+          }
+          user {
+            pk
+            id
+            firstName
+            lastName
+            profile {
+              avatar {
+                original
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
