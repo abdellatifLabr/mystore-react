@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Row, Col, Button, Modal } from 'react-bootstrap';
+import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 
 import ProductCard from '../components/ProductCard';
 import CreateProductForm from '../components/CreateProductForm';
@@ -22,6 +22,19 @@ class ProductsList extends Component {
     this.handleCreateProductModalOpen = this.handleCreateProductModalOpen.bind(this);
     this.handleNewProduct = this.handleNewProduct.bind(this);
     this.handleDeletedProduct = this.handleDeletedProduct.bind(this);
+    this.handeFilterChange = this.handeFilterChange.bind(this);
+  }
+
+  handeFilterChange(e) {
+    let filter = e.target.value;
+    productProvider.searchProducts(filter, this.props.store.id)
+      .then(products => {
+        if (products) {
+          this.setState({
+            products: products.edges.map(edge => edge.node)
+          });
+        }
+      });
   }
 
   handleCreateProductModalOpen() {
@@ -82,12 +95,24 @@ class ProductsList extends Component {
       <>
         <Row>
           <Col md={12} className="mb-4">
-            {
-              visitorIsOwner &&
-              <Button variant="success" onClick={this.handleCreateProductModalOpen}>
-                <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> New Product
-              </Button>
-            }
+            <Row>
+              <Col>
+                {
+                  visitorIsOwner &&
+                  <Button variant="success" onClick={this.handleCreateProductModalOpen}>
+                    <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> New Product
+                  </Button>
+                } 
+              </Col>
+              <Col>
+                <Form.Control 
+                  type="text"
+                  placeholder="Filter products"
+                  value={this.state.filter}
+                  onChange={this.handeFilterChange}
+                />
+              </Col>
+            </Row>
           </Col>
           {this.state.products.map((product, index) => (
             <Col md={4} className="mb-4" key={index}>

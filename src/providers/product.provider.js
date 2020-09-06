@@ -48,10 +48,10 @@ class ProductProvider {
     return res.data.deleteProduct;
   }
 
-  async searchProducts(searchTerm) {
+  async searchProducts(searchTerm, storeId=null) {
     let res = await apollo.query({
       query: queries.PRODUCTS,
-      variables: { searchTerm }
+      variables: { searchTerm, storeId }
     });
 
     return res.data.products;
