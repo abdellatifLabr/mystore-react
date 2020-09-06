@@ -78,6 +78,23 @@ export const STORE = gql`
         pk
         id
       }
+      subscriptions {
+        edges {
+          node {
+            user {
+              pk
+              id
+              firstName
+              lastName
+              profile {
+                avatar {
+                  original
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;

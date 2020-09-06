@@ -7,6 +7,7 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
 import StoreUserOptions from '../components/StoreUserOptions';
+import UsersList from '../components/UsersList';
 
 const ProductsList = React.lazy(() => import('../components/ProductsList'));
 const OrdersList = React.lazy(() => import('../components/OrdersList'));
@@ -122,9 +123,6 @@ class StorePage extends Component {
                         <ListGroup.Item action eventKey="orders">
                           Orders
                         </ListGroup.Item>
-                        <ListGroup.Item action eventKey="workers">
-                          Workers
-                        </ListGroup.Item>
                         <ListGroup.Item action eventKey="subscribers">
                           Subscribers
                         </ListGroup.Item>
@@ -144,8 +142,13 @@ class StorePage extends Component {
                       <Tab.Pane eventKey="orders">
                         <OrdersList store={store} />
                       </Tab.Pane>
-                      <Tab.Pane eventKey="workers">workers</Tab.Pane>
-                      <Tab.Pane eventKey="subscribers">subscribers</Tab.Pane>
+                      <Tab.Pane eventKey="subscribers">
+                        <Card>
+                          <Card.Body>
+                            <UsersList users={store.subscriptions.edges.map(edge => edge.node.user)} />
+                          </Card.Body>
+                        </Card>
+                      </Tab.Pane>
                       <Tab.Pane eventKey="about">about</Tab.Pane>
                     </Tab.Content>
                   </Suspense>
