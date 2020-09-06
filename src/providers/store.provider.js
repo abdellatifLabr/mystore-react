@@ -36,6 +36,14 @@ class StoreProvider {
     return;
   }
 
+  async getMySubscriptions() {
+    let res = await apollo.query({
+      query: queries.MY_SUBSCRIPTIONS
+    });
+
+    return res.data.mySubscriptions;
+  }
+
   async subscribe(storeId) {
     let res = await apollo.mutate({
       mutation: mutations.SUBSCRIBE,

@@ -114,3 +114,32 @@ export const SUBSCRIPTION = gql`
     }
   }
 `;
+
+export const MY_SUBSCRIPTIONS = gql`
+  query {
+    mySubscriptions {
+      edges {
+        node {
+          store {
+            pk
+            id
+            name
+            description
+            closed
+            shipping
+            cover {
+              original
+            }
+            logo {
+              original
+            }
+            user {
+              pk
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`;

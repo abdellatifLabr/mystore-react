@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tab, Nav, Row, Col, Button, Table, Image } from 'react-bootstrap';
+import { Tab, Nav, Row, Col, Button, Table, Image, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faCheckCircle, faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +13,8 @@ class DashboardPage extends Component {
   state = {
     defaultActiveTab: null,
     myStores: null,
-    myOrders: null
+    myOrders: null,
+    mySubscriptions: null
   };
 
   componentDidMount() {
@@ -31,6 +32,13 @@ class DashboardPage extends Component {
     storeProvider.myStores()
       .then(myStores => {
         this.setState({ myStores });
+      });
+    
+    storeProvider.getMySubscriptions()
+      .then(mySubscriptions => {
+        if (mySubscriptions) {
+          this.setState({ mySubscriptions });
+        }
       });
 
     orderProvider.getMyOrders()
@@ -56,7 +64,7 @@ class DashboardPage extends Component {
                 <Nav.Link eventKey="orders">Orders</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="settings">Settings</Nav.Link>
+                <Nav.Link eventKey="subscriptions">Subscriptions</Nav.Link>
               </Nav.Item>
             </Nav>
             <Tab.Content className="py-3">
@@ -139,8 +147,17 @@ class DashboardPage extends Component {
                   </Row>
                 }
               </Tab.Pane>
-              <Tab.Pane eventKey="settings">
-                settings
+              <Tab.Pane eventKey="subscriptions">
+                {
+                  this.state.mySubscriptions &&
+                  <Row>
+                    {this.state.mySubscriptions.edges.map(edge => edge.node).map((subscription, index) => (
+                      <Col key={index} md={3}>
+                        <StoreCard store={subscription.store} />
+                      </Col>
+                    ))}
+                  </Row>
+                }
               </Tab.Pane>
             </Tab.Content>  
           </Col>
