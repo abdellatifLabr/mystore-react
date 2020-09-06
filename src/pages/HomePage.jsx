@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 
 import StoreCard from '../components/StoreCard';
 import storeProvider from '../providers/store.provider';
+import SearchResults from '../components/SearchResults';
 
 class HomePage extends Component {
   state = {
@@ -17,6 +19,15 @@ class HomePage extends Component {
   }
 
   render() {
+    if (this.props.search) {
+      return (
+        <div>
+          <h3 className="mb-3">Search Results</h3>
+          <SearchResults search={this.props.search} />
+        </div>
+      )
+    }
+
     return (
       <div>
         <h3 className="mb-3">Most Visited Stores</h3>
@@ -32,4 +43,8 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+const mapStateToProps = state => ({
+  search: state.search
+});
+
+export default connect(mapStateToProps, {})(HomePage);

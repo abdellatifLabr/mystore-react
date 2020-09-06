@@ -47,6 +47,15 @@ class ProductProvider {
 
     return res.data.deleteProduct;
   }
+
+  async searchProducts(searchTerm) {
+    let res = await apollo.query({
+      query: queries.PRODUCTS,
+      variables: { searchTerm }
+    });
+
+    return res.data.products;
+  }
 }
 
 export default new ProductProvider();

@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import userProvider from '../providers/user.provider';
+import { setSearch } from '../store/actions/search.actions';
 
 class Navigation extends Component {
   state = {};
@@ -29,6 +30,11 @@ class Navigation extends Component {
     super(props);
 
     this.onSignOutClick = this.onSignOutClick.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+  }
+
+  handleSearchChange(e) {
+    this.props.setSearch(e.target.value);
   }
 
   onSignOutClick() {
@@ -90,7 +96,13 @@ class Navigation extends Component {
           <Navbar.Collapse id="basic-navbar-nav">
             <Form inline className="mx-auto w-50">
               <InputGroup className="w-100">
-                <FormControl type="text" placeholder="Search" className="border-light" />
+                <FormControl 
+                  type="text" 
+                  placeholder="Search" 
+                  className="border-light" 
+                  value={this.props.search} 
+                  onChange={this.handleSearchChange} 
+                />
                 <InputGroup.Append>
                   <Button variant="outline-light" className="bg-white text-secondary border-left-0">
                     <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
@@ -136,7 +148,8 @@ class Navigation extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  carts: state.carts
+  carts: state.carts,
+  search: state.search
 });
 
-export default connect(mapStateToProps, {})(withRouter(Navigation));
+export default connect(mapStateToProps, { setSearch })(withRouter(Navigation));
