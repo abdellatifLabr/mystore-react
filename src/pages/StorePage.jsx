@@ -7,10 +7,11 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import storeProvider from '../providers/store.provider';
 import SubscribeButton from '../components/SubscribeButton';
 import StoreUserOptions from '../components/StoreUserOptions';
-import UsersList from '../components/UsersList';
 
 const ProductsList = React.lazy(() => import('../components/ProductsList'));
 const OrdersList = React.lazy(() => import('../components/OrdersList'));
+const UsersList = React.lazy(() => import('../components/UsersList'));
+const DiscountCodesControl = React.lazy(() => import('../components/DiscountCodesControl'));
 
 class StorePage extends Component {
   state = {
@@ -112,7 +113,7 @@ class StorePage extends Component {
                           Subscribers
                         </ListGroup.Item>
                         <ListGroup.Item action eventKey="discount-codes">
-                          Discount Code
+                          Discount Codes
                         </ListGroup.Item>
                       </>
                     }
@@ -141,7 +142,7 @@ class StorePage extends Component {
                           </Card>
                         </Tab.Pane>
                         <Tab.Pane eventKey="discount-codes">
-                          codes
+                          <DiscountCodesControl discountCodes={store.discountCodes.edges.map(edge => edge.node)} storeId={store.pk} />
                         </Tab.Pane>
                         </>
                       }

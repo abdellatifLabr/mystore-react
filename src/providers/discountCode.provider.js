@@ -1,5 +1,6 @@
 import apollo from '../graphql';
 import * as queries from '../graphql/queries/discountCode.queries';
+import * as mutations from '../graphql/mutations/discountCode.mutations';
 
 class DiscountCodeProvider {
   async getDiscountCode(code, storeId) {
@@ -13,6 +14,24 @@ class DiscountCodeProvider {
     }
 
     return;
+  }
+
+  async createDiscountCode(storeId, discountCode) {
+    let res = await apollo.mutate({
+      mutation: mutations.CREATE_DISCOUNT_CODE,
+      variables: { storeId, ...discountCode }
+    });
+
+    return res.data.createDiscountCode;
+  }
+
+  async deleteDiscountCode(id) {
+    let res = await apollo.mutate({
+      mutation: mutations.DELETE_DISCOUNT_CODE,
+      variables: { id }
+    });
+
+    return res.data.deleteDiscountCode;
   }
 }
 

@@ -96,6 +96,18 @@ export const STORE = gql`
           }
         }
       }
+      discountCodes {
+        edges {
+          node {
+            pk
+            id
+            code
+            value
+            expiry
+            expired
+          }
+        }
+      }
     }
   }
 `;
