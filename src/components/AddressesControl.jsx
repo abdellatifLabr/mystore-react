@@ -5,6 +5,7 @@ import { faPlus, faCircleNotch, faTimes } from '@fortawesome/free-solid-svg-icon
 import { CountryDropdown } from 'react-country-region-selector';
 
 import addressProvider from '../providers/address.provider';
+import dialogProvider from '../providers/core/dialog.provider';
 
 class AddressesControl extends Component {
   state = {
@@ -28,17 +29,24 @@ class AddressesControl extends Component {
   }
 
   RemoveAddress(id, index) {
-    addressProvider.deleteAddress(id)
-      .then(data => {
-        if (data.success) {
-          this.setState({
-            addresses: [
-              ...this.state.addresses.slice(0, index),
-              ...this.state.addresses.slice(index + 1)
-            ]
+    dialogProvider.open({
+      title: 'Remove Address',
+      message: 'Are you sure you want to remove this address?',
+      oncancel: () => {},
+      onConfirm: () => {
+        addressProvider.deleteAddress(id)
+          .then(data => {
+            if (data.success) {
+              this.setState({
+                addresses: [
+                  ...this.state.addresses.slice(0, index),
+                  ...this.state.addresses.slice(index + 1)
+                ]
+              });
+            }
           });
-        }
-      });
+      }
+    });
   }
 
   addNewAddress() {
@@ -103,7 +111,7 @@ class AddressesControl extends Component {
             <th>City</th>
             <th>Street</th>
             <th>Postal Code</th>
-            <th>Actions</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -116,7 +124,7 @@ class AddressesControl extends Component {
               </td>
               <td>{address.postalCode}</td>
               <td className="text-center">
-                <Button variant="link" className="text-danger p-0" onClick={e => this.RemoveAddress(address.pk, index)}>
+                <Button variant="link" className="text-danger py-0" onClick={e => this.RemoveAddress(address.pk, index)}>
                   <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>
                 </Button>
               </td>
@@ -137,6 +145,7 @@ class AddressesControl extends Component {
               <Form.Control 
                 type="text"
                 name="city"
+                placeholder="City"
                 required
                 value={this.state.addressFormData.city}
                 onChange={this.handleChange}
@@ -147,6 +156,7 @@ class AddressesControl extends Component {
               <Form.Control 
                 type="text"
                 name="street"
+                placeholder="Street"
                 required
                 value={this.state.addressFormData.street}
                 onChange={this.handleChange}
@@ -157,6 +167,7 @@ class AddressesControl extends Component {
               <Form.Control 
                 type="text"
                 name="postalCode"
+                placeholder="Postal Code"
                 required
                 value={this.state.addressFormData.postalCode}
                 onChange={this.handleChange}
