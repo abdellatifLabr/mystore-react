@@ -33,7 +33,7 @@ class HomePage extends Component {
         <h3 className="mb-3">Most Visited Stores</h3>
         <Row>
           {this.state.stores.map(store => (
-            <Col md={3} key={store.id}>
+            <Col md={3} className="mb-4" key={store.id}>
               <StoreCard store={store} />
             </Col>
           ))}

@@ -74,23 +74,24 @@ class DashboardPage extends Component {
               <Tab.Pane eventKey="stores">
                 {
                   this.state.myStores &&
-                  <Row>
-                    {this.state.myStores.edges.map(edge => edge.node).map(store => (
-                      <Col md={3} key={store.id}>
-                        <StoreCard store={store} />
-                      </Col>
-                    ))}
-                    <Col md={3}>
+                  <>
+                  <Row className="mb-4">
+                    <Col>
                       <Link to="/store/create">
-                        <Button block className="h-100 bg-white border border-1">
-                          <h2 className="icon text-secondary">
-                            <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
-                          </h2>
-                          <div className="text text-secondary font-weight-bold">New Store</div>
+                        <Button variant="success">
+                          <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> New Store
                         </Button>
                       </Link>
                     </Col>
                   </Row>
+                  <Row>
+                    {this.state.myStores.edges.map(edge => edge.node).map(store => (
+                      <Col md={3} className="mb-4" key={store.id}>
+                        <StoreCard store={store} />
+                      </Col>
+                    ))}
+                  </Row>
+                  </>
                 }
               </Tab.Pane>
               <Tab.Pane eventKey="orders">
@@ -152,7 +153,7 @@ class DashboardPage extends Component {
                   this.state.mySubscriptions &&
                   <Row>
                     {this.state.mySubscriptions.edges.map(edge => edge.node).map((subscription, index) => (
-                      <Col key={index} md={3}>
+                      <Col key={index} className="mb-4" md={3}>
                         <StoreCard store={subscription.store} />
                       </Col>
                     ))}

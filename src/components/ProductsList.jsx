@@ -74,6 +74,8 @@ class ProductsList extends Component {
 
     productProvider.getProducts(storeId)
       .then(products => {
+        this.setState({ loading: false });
+
         this.setState({
           products: products.edges.map(edge => edge.node)
         });
@@ -93,8 +95,8 @@ class ProductsList extends Component {
 
     return (
       <>
-        <Row>
-          <Col md={12} className="mb-4">
+        <Row className="mb-4">
+          <Col md={12}>
             <Row>
               <Col>
                 {
@@ -114,12 +116,21 @@ class ProductsList extends Component {
               </Col>
             </Row>
           </Col>
-          {this.state.products.map((product, index) => (
-            <Col md={4} className="mb-4" key={index}>
-              <ProductCard product={product} onDelete={() => this.handleDeletedProduct(index)} />
-            </Col>
-          ))}
         </Row>
+        {
+          this.state.products.length === 0
+          ? (
+            <h4 className="text-secondary text-center">No products available</h4>
+          ) : (
+            <Row>
+              {this.state.products.map((product, index) => (
+                <Col md={4} className="mb-4" key={index}>
+                  <ProductCard product={product} onDelete={() => this.handleDeletedProduct(index)} />
+                </Col>
+              ))}
+            </Row>
+          )
+        }
         <Modal size="xl" show={this.state.showCreateProductModal} onHide={this.handleCreateProductModalClose}>
           <Modal.Header closeButton>
             <Modal.Title>Create New Product</Modal.Title>
