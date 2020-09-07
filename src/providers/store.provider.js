@@ -83,6 +83,15 @@ class StoreProvider {
 
     return res.data.createStore;
   }
+
+  async createVisit(storeId) {
+    let res = await apollo.mutate({
+      mutation: mutations.CREATE_VISIT,
+      variables: { storeId }
+    }); 
+
+    return res.data.createVisit;
+  }
 }
 
 export default new StoreProvider();

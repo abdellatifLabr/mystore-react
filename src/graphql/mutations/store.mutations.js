@@ -89,3 +89,15 @@ export const CREATE_STORE = gql`
     }
   }
 `;
+
+export const CREATE_VISIT = gql`
+  mutation CreateVisit($storeId: ID!) {
+    createVisit(
+      input: {
+        storeId: $storeId
+      }
+    ) {
+      success
+    }
+  }
+`;

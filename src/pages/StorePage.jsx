@@ -31,6 +31,10 @@ class StorePage extends Component {
     storeProvider.getStore(storeId)
       .then(store => {
         this.setState({ store, loading: false });
+
+        setTimeout(() => {
+          storeProvider.createVisit(store.pk);
+        }, 5000);
       });
   }
 
