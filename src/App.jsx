@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignUpPage';
 import SignInPage from './pages/SignInPage';
@@ -45,6 +46,7 @@ class App extends Component {
             <Route path="/dashboard" component={DashboardPage} exact />
           </Switch>
         </Container>
+        <Footer />
       </BrowserRouter>
     );
   }
