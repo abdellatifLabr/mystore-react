@@ -5,7 +5,7 @@ import { setContext } from '@apollo/client/link/context';
 import userProvider from '../providers/user.provider';
 
 const httpLink = createUploadLink({
-  uri: 'http://localhost:8000/graphql'
+  uri: process.env.REACT_APP_API_GRAPHQL_ENDPOINT
 });
 
 const authLink = setContext(async (req, { headers }) => {
