@@ -148,8 +148,13 @@ class OrderDetails extends Component {
                   this.state.addresses && this.state.addresses.edges.map(edge => edge.node).length > 0
                   ? (
                     <Form.Control as="select" custom onChange={this.addBillingAddress} disabled={order.done}>
+                      <option value="none" selected disabled hidden>Select an address</option>
                       {this.state.addresses.edges.map(edge => edge.node).map((address, index) => (
-                        <option key={index} value={address.pk}>{address.formatted}</option>
+                        <option 
+                          key={index} 
+                          value={address.pk} 
+                          selected={order.billingAddress && (address.pk === order.billingAddress.pk)}
+                        >{address.formatted}</option>
                       ))}
                     </Form.Control>
                   ) : (
@@ -170,8 +175,13 @@ class OrderDetails extends Component {
                 {
                   this.state.addresses && !this.state.billingIsShippingAddress &&
                   <Form.Control as="select" custom disabled={order.done} onChange={this.addShippingAddress}>
+                    <option value="none" selected disabled hidden>Select an address</option>
                     {this.state.addresses.edges.map(edge => edge.node).map((address, index) => (
-                      <option key={index} value={address.pk}>{address.formatted}</option>
+                      <option 
+                        key={index} 
+                        value={address.pk}
+                        selected={order.billingAddress && (address.pk === order.billingAddress.pk)}
+                      >{address.formatted}</option>
                     ))}
                   </Form.Control>
                 }
