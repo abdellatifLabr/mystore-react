@@ -32,7 +32,7 @@ class StorePage extends Component {
       .then(store => {
         this.setState({ store, loading: false });
 
-        if (this.props.user) {
+        if (this.props.user && this.props.user.id !== store.user.id) {
           setTimeout(() => {
             storeProvider.createVisit(store.pk);
           }, 5000);

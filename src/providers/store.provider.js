@@ -92,6 +92,15 @@ class StoreProvider {
 
     return res.data.createVisit;
   }
+
+  async getAnalytics(analyticsId) {
+    let res = await apollo.query({
+      query: queries.ANALYTICS,
+      variables: { analyticsId }
+    });
+
+    return res.data.analytics;
+  }
 }
 
 export default new StoreProvider();

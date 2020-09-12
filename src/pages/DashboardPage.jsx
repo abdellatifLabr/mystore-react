@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tab, Nav, Row, Col, Button, Table, Image, Card } from 'react-bootstrap';
+import { Tab, Nav, Row, Col, Button, Table, Image, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faCheckCircle, faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +7,7 @@ import { faPlus, faCheckCircle, faHourglassHalf } from '@fortawesome/free-solid-
 import storeProvider from '../providers/store.provider';
 import orderProvider from '../providers/order.provider';
 import StoreCard from '../components/StoreCard';
+import Analytics from '../components/Analytics';
 import { formatDateTime } from '../utils';
 
 class DashboardPage extends Component {
@@ -69,7 +70,10 @@ class DashboardPage extends Component {
             </Nav>
             <Tab.Content className="py-3">
               <Tab.Pane eventKey="analytics">
-                analytics
+                {
+                  this.state.myStores &&
+                  <Analytics stores={this.state.myStores.edges.map(edge => edge.node)} />
+                }
               </Tab.Pane>
               <Tab.Pane eventKey="stores">
                 {

@@ -48,6 +48,10 @@ export const MY_STORES = gql`
             pk
             id
           }
+          analytics {
+            pk
+            id
+          }
         }
       }
     }
@@ -153,6 +157,18 @@ export const MY_SUBSCRIPTIONS = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const ANALYTICS = gql`
+  query Analytics($analyticsId: ID!) {
+    analytics(id: $analyticsId) {
+      totalRevenue
+      monthlyRevenueChartData
+      totalVisits
+      monthlyVisitsChartData
+      averageOrderTotal
     }
   }
 `;
