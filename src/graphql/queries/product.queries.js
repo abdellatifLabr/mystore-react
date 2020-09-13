@@ -33,10 +33,11 @@ export const PRODUCT = gql`
 `;
 
 export const PRODUCTS = gql`
-  query Products($storeId: ID, $searchTerm: String) {
+  query Products($storeId: ID, $name: String, $orderBy: String) {
     products(
       store_Id: $storeId, 
-      name_Icontains: $searchTerm
+      name_Icontains: $name,
+      orderBy: $orderBy
     ) {
       edges {
         node {

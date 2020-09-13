@@ -12,7 +12,11 @@ class ProductsList extends Component {
   state = {
     loading: false,
     showCreateProductModal: false,
-    products: null
+    products: null,
+    filters: {
+      storeId: this.props.store.id,
+      orderBy: '-created'
+    }
   };
 
   constructor(props) {
@@ -23,18 +27,19 @@ class ProductsList extends Component {
     this.handleNewProduct = this.handleNewProduct.bind(this);
     this.handleDeletedProduct = this.handleDeletedProduct.bind(this);
     this.handeFilterChange = this.handeFilterChange.bind(this);
+    this.loadProducts = this.loadProducts.bind(this);
   }
 
   handeFilterChange(e) {
-    let filter = e.target.value;
-    productProvider.searchProducts(filter, this.props.store.id)
-      .then(products => {
-        if (products) {
-          this.setState({
-            products: products.edges.map(edge => edge.node)
-          });
-        }
-      });
+    let { name, value } = e.target;
+    this.setState(state => ({
+      filters: {
+        ...state.filters,
+        [name]: value
+      }
+    }));
+
+    this.loadProducts();
   }
 
   handleCreateProductModalOpen() {
@@ -68,11 +73,13 @@ class ProductsList extends Component {
   }
 
   componentDidMount() {
-    let storeId = this.props.store.id;
+    this.loadProducts();
+  }
 
-    this.setState({ loading: true });
+  loadProducts() {
+    this.setState({ loading: true, products: null });
 
-    productProvider.getProducts(storeId)
+    productProvider.getProducts(this.state.filters)
       .then(products => {
         this.setState({ loading: false });
 
@@ -83,14 +90,6 @@ class ProductsList extends Component {
   }
 
   render() {
-    if (!this.state.products) {
-      return (
-        <h4 className="text-secondary text-center">
-          {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'No products available'}
-        </h4>
-      );
-    }
-
     let visitorIsOwner = this.props.user && this.props.user.id === this.props.store.user.id;
 
     return (
@@ -108,9 +107,24 @@ class ProductsList extends Component {
               </Col>
               <Col>
                 <Form.Control 
+                  as="select" 
+                  custom 
+                  name="orderBy" 
+                  value={this.state.filters.orderBy}
+                  onChange={this.handeFilterChange}
+                >
+                  <option value="-created">Newest</option>
+                  <option value="created">Oldest</option>
+                  <option value="price">Price: High to Low</option>
+                  <option value="-price">Price: Low to High</option>
+                </Form.Control>
+              </Col>
+              <Col>
+                <Form.Control 
                   type="text"
-                  placeholder="Filter products"
-                  value={this.state.filter}
+                  placeholder="Search by name"
+                  name="name"
+                  value={this.state.filters.name}
                   onChange={this.handeFilterChange}
                 />
               </Col>
@@ -118,9 +132,11 @@ class ProductsList extends Component {
           </Col>
         </Row>
         {
-          this.state.products.length === 0
+          !this.state.products || this.state.products.length === 0
           ? (
-            <h4 className="text-secondary text-center">No products available</h4>
+            <h4 className="text-secondary text-center">
+              {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'No products available'}
+            </h4>
           ) : (
             <Row>
               {this.state.products.map((product, index) => (
