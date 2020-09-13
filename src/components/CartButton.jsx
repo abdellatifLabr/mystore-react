@@ -78,7 +78,7 @@ class CartButton extends Component {
 
   render() {
     let inCart = !!(this.state.cartProduct);
-    let { product, size, user, ...props } = this.props;
+    let { product, user, ...props } = this.props;
 
     if (product.unitsLeft === 0) {
       return <strong className="text-warning">SOLD OUT</strong>
