@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import { InView } from 'react-intersection-observer';
 
 import ProductCard from '../components/ProductCard';
 import CreateProductForm from '../components/CreateProductForm';
@@ -16,6 +17,12 @@ class ProductsList extends Component {
     filters: {
       storeId: this.props.store.id,
       orderBy: '-created'
+    },
+    pageInfo: {},
+    pageNumber: 1,
+    pagination: {
+      count: 3,
+      after: ''
     }
   };
 
@@ -28,18 +35,20 @@ class ProductsList extends Component {
     this.handleDeletedProduct = this.handleDeletedProduct.bind(this);
     this.handeFilterChange = this.handeFilterChange.bind(this);
     this.loadProducts = this.loadProducts.bind(this);
+    this.handleLoadMoreVisibilityChange = this.handleLoadMoreVisibilityChange.bind(this);
   }
 
   handeFilterChange(e) {
     let { name, value } = e.target;
-    this.setState(state => ({
-      filters: {
-        ...state.filters,
-        [name]: value
-      }
-    }));
-
-    this.loadProducts();
+    this.setState(
+      state => ({
+        filters: {
+          ...state.filters,
+          [name]: value
+        }
+      }),
+      () => this.loadProducts()
+    );
   }
 
   handleCreateProductModalOpen() {
@@ -76,17 +85,37 @@ class ProductsList extends Component {
     this.loadProducts();
   }
 
-  loadProducts() {
-    this.setState({ loading: true, products: null });
+  handleLoadMoreVisibilityChange(inView) {
+    if (inView) {
+      this.setState(
+        state => ({
+          pagination: {
+            ...state.pagination,
+            after: state.pageInfo.endCursor
+          }
+        }),
+        () => this.loadProducts(false)
+      );
+    }
+  }
 
-    productProvider.getProducts(this.state.filters)
-      .then(products => {
-        this.setState({ loading: false });
-
-        this.setState({
-          products: products.edges.map(edge => edge.node)
-        });
-      });
+  loadProducts(explicit = true) {
+    this.setState(
+      state => ({ 
+        loading: (!state.products) ? true : false
+      }),
+      () => {
+        productProvider.getProducts(this.state.filters, this.state.pagination)
+          .then(products => {
+            let loadedProducts = products.edges.map(edge => edge.node);
+            this.setState(state => ({
+              loading: false,
+              products: (explicit) ? loadedProducts : [...state.products, ...loadedProducts],
+              pageInfo: products.pageInfo
+            }));
+          });
+      }
+    );
   }
 
   render() {
@@ -115,8 +144,8 @@ class ProductsList extends Component {
                 >
                   <option value="-created">Newest</option>
                   <option value="created">Oldest</option>
-                  <option value="price">Price: High to Low</option>
-                  <option value="-price">Price: Low to High</option>
+                  <option value="price">Price: Low to High</option>
+                  <option value="-price">Price: High to Low</option>
                 </Form.Control>
               </Col>
               <Col>
@@ -138,7 +167,7 @@ class ProductsList extends Component {
               {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'No products available'}
             </h4>
           ) : (
-            <Row>
+            <Row className="mb-4">
               {this.state.products.map((product, index) => (
                 <Col md={4} className="mb-4" key={index}>
                   <ProductCard product={product} onDelete={() => this.handleDeletedProduct(index)} />
@@ -147,6 +176,18 @@ class ProductsList extends Component {
             </Row>
           )
         }
+        <Row>
+          <Col md={12}>
+            {
+              this.state.pageInfo.hasNextPage &&
+              <InView as="div" onChange={this.handleLoadMoreVisibilityChange}>
+                <h4 className="text-secondary text-center">
+                  <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon>
+                </h4>
+              </InView>
+            }
+          </Col>
+        </Row>
         <Modal size="xl" show={this.state.showCreateProductModal} onHide={this.handleCreateProductModalClose}>
           <Modal.Header closeButton>
             <Modal.Title>Create New Product</Modal.Title>

@@ -12,10 +12,10 @@ class ProductProvider {
     return res.data.product;
   }
 
-  async getProducts(filters) {
+  async getProducts(filters, pagination) {
     let res = await apollo.query({
       query: queries.PRODUCTS,
-      variables: { ...filters }
+      variables: { ...filters, ...pagination }
     });
 
     return res.data.products;

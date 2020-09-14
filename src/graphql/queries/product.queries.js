@@ -33,12 +33,26 @@ export const PRODUCT = gql`
 `;
 
 export const PRODUCTS = gql`
-  query Products($storeId: ID, $name: String, $orderBy: String) {
+  query Products(
+    $storeId: ID, 
+    $name: String, 
+    $orderBy: String,
+    $count: Int,
+    $after: String
+  ) {
     products(
       store_Id: $storeId, 
       name_Icontains: $name,
-      orderBy: $orderBy
+      orderBy: $orderBy,
+      first: $count,
+      after: $after
     ) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
       edges {
         node {
           pk
