@@ -95,7 +95,8 @@ class Navigation extends Component {
         <Container>
           <Link to="/">
             <Navbar.Brand>
-              My Store
+              <Image src="assets/img/logo.png" height="32" className="mr-2" />
+              <h5 className="d-inline m-0">My Store</h5>
             </Navbar.Brand>
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
