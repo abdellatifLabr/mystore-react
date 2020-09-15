@@ -40,14 +40,16 @@ export const PRODUCTS = gql`
     $name: String, 
     $orderBy: String,
     $count: Int,
-    $after: String
+    $after: String,
+    $before: String
   ) {
     products(
       store_Id: $storeId, 
       name_Icontains: $name,
       orderBy: $orderBy,
       first: $count,
-      after: $after
+      after: $after,
+      before: $before
     ) {
       pageInfo {
         hasNextPage

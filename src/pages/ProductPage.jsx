@@ -8,11 +8,13 @@ import Rating from 'react-rating';
 import productProvider from '../providers/product.provider';
 import ProductPicturesExplorer from '../components/ProductPicturesExplorer';
 import CartButton from '../components/CartButton';
+import ProductCard from '../components/ProductCard';
 
 class ProductPage extends Component {
   state = {
     loading: false,
-    product: null
+    product: null,
+    similarProducts: null
   };
 
   constructor(props) {
@@ -20,6 +22,7 @@ class ProductPage extends Component {
 
     this.handleRatingClick = this.handleRatingClick.bind(this);
     this.handleRatingHover = this.handleRatingHover.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
 
   handleRatingClick(value) {
@@ -40,6 +43,14 @@ class ProductPage extends Component {
   }
 
   componentDidMount() {
+    this.fetchData();
+  }
+
+  componentWillReceiveProps(props) {
+    this.fetchData();
+  }
+
+  fetchData() {
     let productId = this.props.match.params.id;
 
     this.setState({ loading: true });
@@ -47,6 +58,13 @@ class ProductPage extends Component {
     productProvider.getProduct(productId)
       .then(product => {
         this.setState({ product });
+        
+        productProvider.getProducts({ storeId: product.store.id, orderBy: '-created' }, { count: 8, after: product.id })
+          .then(products => {
+            this.setState({
+              similarProducts: products.edges.map(edge => edge.node)
+            });
+          });
       });
   }
 
@@ -62,7 +80,8 @@ class ProductPage extends Component {
     let { name, description, rating, ratingsCount, price, store } = this.state.product;
 
     return (
-      <Row>
+      <>
+      <Row className="mb-5">
         <Col>
           <ProductPicturesExplorer product={this.state.product} />
         </Col>
@@ -92,6 +111,31 @@ class ProductPage extends Component {
           </div>
         </Col>
       </Row>
+      <Row>
+        <Col md={12}>
+          {
+            !this.state.similarProducts        
+            ? (
+              <h4 className="text-secondary text-center">
+                {this.state.loading ? <FontAwesomeIcon icon={faCircleNotch} spin></FontAwesomeIcon> : 'No similar products available'}
+              </h4>
+            )
+            : (
+              <Row>
+                <Col md={12} className="mb-4">
+                  <h3>Similar Products</h3>
+                </Col>
+                {this.state.similarProducts.map((product, index) => (
+                  <Col md={3} key={index} className="mb-4">
+                    <ProductCard product={product} />
+                  </Col>
+                ))}
+              </Row>
+            )
+          }
+        </Col>
+      </Row>
+      </>
     );
   }
 }
