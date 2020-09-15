@@ -8,6 +8,8 @@ export const PRODUCT = gql`
       name
       description
       unitsLeft
+      rating
+      ratingsCount
       pictures {
         edges {
           node {
@@ -59,6 +61,7 @@ export const PRODUCTS = gql`
           id
           name
           unitsLeft
+          rating
           pictures {
             edges {
               node {

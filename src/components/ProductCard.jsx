@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Media, Image, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisV, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -91,6 +91,9 @@ class ProductCard extends Component {
           <div className="d-flex justify-content-between align-items-center">
             <div>
               <CartButton size="sm" product={product} />
+            </div>
+            <div>
+              <FontAwesomeIcon icon={faStar} className="text-warning"></FontAwesomeIcon> {product.rating}
             </div>
           </div>
         </Card.Footer>

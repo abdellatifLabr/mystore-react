@@ -7,7 +7,8 @@ export const UPDATE_PRODUCT = gql`
     $description: String,
     $quantity: Int,
     $price: Decimal,
-    $pictures: [Upload]
+    $pictures: [Upload],
+    $rating: Float
   ) {
     updateProduct(
       input: {
@@ -16,7 +17,8 @@ export const UPDATE_PRODUCT = gql`
         description: $description,
         quantity: $quantity,
         price: $price,
-        pictures: $pictures
+        pictures: $pictures,
+        rating: $rating
       }
     ) {
       success
