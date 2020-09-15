@@ -97,7 +97,7 @@ class EditProductForm extends Component {
       .then(data => {
         this.setState({ loading: false });
 
-        let { success, errors, product } = data;
+        let { success, errors } = data;
 
         if (success) this.setState({ success: true });
 

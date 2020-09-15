@@ -19,10 +19,6 @@ class StorePage extends Component {
     store: null
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     let storeId = this.props.match.params.id;
 

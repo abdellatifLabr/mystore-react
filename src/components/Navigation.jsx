@@ -24,7 +24,9 @@ import userProvider from '../providers/user.provider';
 import { setSearch } from '../store/actions/search.actions';
 
 class Navigation extends Component {
-  state = {};
+  state = {
+    search: ''
+  };
 
   constructor(props) {
     super(props);
@@ -34,7 +36,11 @@ class Navigation extends Component {
   }
 
   handleSearchChange(e) {
-    this.props.setSearch(e.target.value);
+    let { value } = e.target;
+    this.setState(
+      { search: value },
+      () => this.props.setSearch(value)
+    );
   }
 
   onSignOutClick() {
@@ -100,7 +106,7 @@ class Navigation extends Component {
                   type="text" 
                   placeholder="Search" 
                   className="border-light" 
-                  value={this.props.search} 
+                  value={this.state.search} 
                   onChange={this.handleSearchChange} 
                 />
                 <InputGroup.Append>

@@ -16,7 +16,7 @@ class SearchResults extends Component {
     if (prevProps.search !== this.props.search) {
       this.setState({ loading: true });
 
-      productProvider.searchProducts(this.props.search)
+      productProvider.getProducts({ name: this.props.search })
         .then(products => {
           this.setState({
             loading: false,

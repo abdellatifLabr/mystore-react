@@ -93,7 +93,7 @@ class EditStoreForm extends Component {
       .then(data => {
         this.setState({ loading: false });
 
-        let { success, errors, store } = data;
+        let { success, errors } = data;
 
         if (success) this.setState({ success: true });
 

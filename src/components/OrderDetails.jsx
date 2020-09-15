@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Card, ListGroup, Form, Alert, Image } from 'react-bootstrap';
+import { Row, Col, Card, ListGroup, Form, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { loadStripe } from '@stripe/stripe-js';

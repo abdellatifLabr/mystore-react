@@ -4,7 +4,6 @@ import { Card, Form, Button, Alert, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-import ImageFilePreview from '../components/ImageFilePreview';
 import storeProvider from '../providers/store.provider';
 
 class CreateStoreForm extends Component {
