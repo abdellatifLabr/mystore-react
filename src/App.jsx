@@ -27,7 +27,12 @@ class App extends Component {
       <BrowserRouter>
         <Navigation />
         <Container className="my-4">
-          {this.props.user && !this.props.user.verified && <UserVerificationAlert />}
+          {
+            this.props.user && 
+            !this.props.user.verified && 
+            process.env.REACT_APP_EMAIL_VERIFICATION &&
+            <UserVerificationAlert />
+          }
           <Switch>
             <Route path="/" component={HomePage} exact />
             <Route path="/signup" component={SignUpPage} exact />
