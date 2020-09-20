@@ -71,7 +71,7 @@ class DashboardPage extends Component {
             <Tab.Content className="py-3">
               <Tab.Pane eventKey="analytics">
                 {
-                  this.state.myStores &&
+                  this.state.myStores && this.state.myStores.edges.map(edge => edge.node).length > 0 &&
                   <Analytics stores={this.state.myStores.edges.map(edge => edge.node)} />
                 }
               </Tab.Pane>
