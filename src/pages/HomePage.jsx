@@ -5,6 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 import StoreCard from '../components/StoreCard';
 import storeProvider from '../providers/store.provider';
 import SearchResults from '../components/SearchResults';
+import StoresList from '../components/StoresList';
 
 class HomePage extends Component {
   state = {
@@ -31,13 +32,7 @@ class HomePage extends Component {
     return (
       <div>
         <h3 className="mb-3">Most Visited Stores</h3>
-        <Row>
-          {this.state.stores.map(store => (
-            <Col md={3} className="mb-4" key={store.id}>
-              <StoreCard store={store} />
-            </Col>
-          ))}
-        </Row>
+        <StoresList />
       </div>
     );
   }

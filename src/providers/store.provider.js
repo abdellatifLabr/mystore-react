@@ -3,11 +3,12 @@ import * as queries from '../graphql/queries/store.queries';
 import * as mutations from '../graphql/mutations/store.mutations';
 
 class StoreProvider {
-  async getStores() {
+  async getStores(filters, pagination) {
     let res = await apollo.query({
-      query: queries.STORES
+      query: queries.STORES,
+      variables: { ...filters, ...pagination }
     });
-    return res.data.stores.edges.map(edge => edge.node);
+    return res.data.stores;
   }
 
   async myStores() {

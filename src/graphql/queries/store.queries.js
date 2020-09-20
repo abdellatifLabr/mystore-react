@@ -1,8 +1,26 @@
 import { gql } from '@apollo/client';
 
 export const STORES = gql`
-  query {
-    stores {
+  query Stores(
+    $name: String, 
+    $orderBy: String,
+    $count: Int,
+    $after: String,
+    $before: String
+  ) {
+    stores(
+      name_Icontains: $name,
+      orderBy: $orderBy,
+      first: $count,
+      after: $after,
+      before: $before
+    ) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
       edges {
         node {
           id
