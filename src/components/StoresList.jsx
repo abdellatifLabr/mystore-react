@@ -81,7 +81,7 @@ class StoresList extends Component {
       <>
       <Row>
         {this.state.stores.map((store, index) => (
-          <Col key={index} md={3}>
+          <Col key={index} md={3} className="mb-4">
             <StoreCard store={store} />
           </Col>
         ))}
