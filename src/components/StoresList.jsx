@@ -12,12 +12,12 @@ class StoresList extends Component {
     loading: false,
     stores: null,
     filters: {
-      orderBy: '-created'
+      orderBy: 'created'
     },
     pageInfo: {},
     pageNumber: 1,
     pagination: {
-      count: 3,
+      count: 9,
       after: ''
     }
   };
@@ -81,7 +81,7 @@ class StoresList extends Component {
       <>
       <Row>
         {this.state.stores.map((store, index) => (
-          <Col key={index} md={3} className="mb-4">
+          <Col key={index} md={4} className="mb-5">
             <StoreCard store={store} />
           </Col>
         ))}

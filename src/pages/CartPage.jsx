@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Card, Media, Image, ListGroup, Row, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch, faTimes, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch, faTimes, faShoppingCart, faStar } from '@fortawesome/free-solid-svg-icons';
 
 import cartsProvider from '../providers/carts.provider';
 import orderProvider from '../providers/order.provider';
@@ -165,7 +165,12 @@ class CartPage extends Component {
                       <Link to={`/product/${cartProduct.product.id}`}>
                         <h4>{cartProduct.product.name}</h4>
                       </Link>
-                      <p className="text-secondary">{cartProduct.product.description}</p>
+                      <div className="text-secondary">{cartProduct.product.description}</div>
+                      <div className="my-2">
+                      <FontAwesomeIcon icon={faStar} className="text-warning"></FontAwesomeIcon> {' '}
+                        {cartProduct.product.rating} {' '}
+                        <span className="text-secondary">({cartProduct.product.ratingsCount})</span>
+                      </div>
                       <span className="font-weight-bold">{cartProduct.product.price}</span>
                     </div>
                   </div>

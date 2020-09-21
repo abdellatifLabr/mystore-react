@@ -31,7 +31,7 @@ class HomePage extends Component {
 
     return (
       <div>
-        <h3 className="mb-3">Most Visited Stores</h3>
+        <h3 className="mb-4">Most Visited Stores</h3>
         <StoresList />
       </div>
     );
