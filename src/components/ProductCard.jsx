@@ -93,7 +93,9 @@ class ProductCard extends Component {
               <CartButton size="sm" product={product} />
             </div>
             <div>
-              <FontAwesomeIcon icon={faStar} className="text-warning"></FontAwesomeIcon> {product.rating}
+              <FontAwesomeIcon icon={faStar} className="text-warning"></FontAwesomeIcon> {' '}
+              {product.rating} {' '}
+              <span className="text-secondary">({product.ratingsCount})</span>
             </div>
           </div>
         </Card.Footer>

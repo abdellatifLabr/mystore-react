@@ -101,8 +101,7 @@ class ProductPage extends Component {
                 onChange={this.handleRatingChange}
                 onClick={this.handleRatingClick}
                 onHover={this.handleRatingHover}
-              /> {rating}
-              <small className="d-block text-secondary">{ratingsCount} review(s)</small>
+              /> {rating} <span className="text-secondary">({ratingsCount})</span>
             </p>
             <strong>{price}</strong>
           </div>

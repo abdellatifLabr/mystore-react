@@ -64,6 +64,7 @@ export const PRODUCTS = gql`
           name
           unitsLeft
           rating
+          ratingsCount
           pictures {
             edges {
               node {
