@@ -80,6 +80,8 @@ export const DELETE_CART_PRODUCT = gql`
                 name
                 description
                 price
+                rating
+                ratingsCount
                 pictures {
                   edges {
                     node {
@@ -142,6 +144,8 @@ export const UPDATE_CART_PRODUCT = gql`
                 name
                 description
                 price
+                rating
+                ratingsCount
                 pictures {
                   edges {
                     node {

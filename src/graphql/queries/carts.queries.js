@@ -82,6 +82,8 @@ export const CART = gql`
               name
               description
               price
+              rating
+              ratingsCount
               pictures {
                 edges {
                   node {
