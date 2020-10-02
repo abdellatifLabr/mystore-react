@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
 
-import StoreCard from '../components/StoreCard';
 import storeProvider from '../providers/store.provider';
 import SearchResults from '../components/SearchResults';
 import StoresList from '../components/StoresList';
