@@ -13,7 +13,6 @@ import userProvider from './providers/user.provider';
 import { setUser } from './store/actions/user.actions';
 import cartsProvider from './providers/carts.provider';
 import { setCarts } from './store/actions/carts.actions';
-import wsConnect from './ws';
 
 async function acquirePreRenderRequirements() {
   if (userProvider.isAuthenticated()) {
@@ -24,8 +23,6 @@ async function acquirePreRenderRequirements() {
     if (carts) {
       store.dispatch(setCarts(carts.edges.map(edge => edge.node)));
     }
-
-    await wsConnect();
   }
   return;
 }
